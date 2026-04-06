@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Данные мониторинга цен на социально значимые продукты">
+    <title>Данные | Антимонопольное регулирование КР</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-title">
+                <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7L3 11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11L21 7L12 2Z"
+                        fill="#3b82f6" />
+                </svg>
+                <span>Антимонопольное регулирование КР</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Открыть меню">☰</button>
+            <nav class="navbar" id="navbar">
+                <a href="index.html">Главная</a>
+                <a href="data.html" class="active">Данные</a>
+                <a href="analytics.html">Аналитика</a>
+                <a href="about.html">О проекте</a>
+                <a href="news.html">Новости</a>
+                <a href="contact.html">Контакты</a>
+                <button class="btn btn-primary" data-modal-target="reportModal">Сообщить о завышении цен</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-3">
+        <div class="container fade-in">
+            <div
+                style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h1 style="margin-bottom: 0.5rem;">Данные мониторинга</h1>
+                    <p class="text-muted">Таблица розничных цен по регионам Кыргызской Республики.</p>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-outline" onclick="alert('Скачивание CSV... (Mock)');">Скачать CSV</button>
+                    <button class="btn btn-outline" onclick="window.print();">Печать</button>
+                </div>
+            </div>
+
+            <!-- Filters Row -->
+            <div class="filters-row mb-2">
+                <div class="form-group">
+                    <label class="form-label" for="filterRegion">Регион</label>
+                    <select id="filterRegion" class="form-control">
+                        <option value="all">Все регионы</option>
+                        <option value="г. Бишкек">г. Бишкек</option>
+                        <option value="г. Ош">г. Ош</option>
+                        <option value="Чуйская обл.">Чуйская обл.</option>
+                        <option value="Ошская обл.">Ошская обл.</option>
+                        <option value="Джалал-Абадская обл.">Джалал-Абадская обл.</option>
+                        <option value="Иссык-Кульская обл.">Иссык-Кульская обл.</option>
+                        <option value="Нарынская обл.">Нарынская обл.</option>
+                        <option value="Таласская обл.">Таласская обл.</option>
+                        <option value="Баткенская обл.">Баткенская обл.</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="filterCategory">Продукт</label>
+                    <select id="filterCategory" class="form-control">
+                        <option value="all">Все категории</option>
+                        <option value="bread">Хлебобулочные изделия</option>
+                        <option value="flour">Мука</option>
+                        <option value="sugar">Сахар</option>
+                        <option value="meat">Мясо</option>
+                        <option value="veg">Овощи</option>
+                        <option value="other">Остальное</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="filterDate">Поиск</label>
+                    <input type="text" id="filterSearch" class="form-control" placeholder="Название или регион...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="filterDate">Дата (пример)</label>
+                    <input type="date" id="filterDate" class="form-control" value="2026-02-24">
+                </div>
+            </div>
+
+            <div class="card mb-3" style="padding: 0;">
+                <div class="table-responsive">
+                    <table class="table" style="margin:0;">
+                        <thead>
+                            <tr>
+                                <th data-sort="date" aria-sort="descending">Дата <span id="sort-date" class="sort-icon">
+                                        ▼</span></th>
+                                <th data-sort="region">Регион <span id="sort-region" class="sort-icon"></span></th>
+                                <th data-sort="product">Продукт <span id="sort-product" class="sort-icon"></span></th>
+                                <th>Ед.изм</th>
+                                <th data-sort="price">Цена (сом) <span id="sort-price" class="sort-icon"></span></th>
+                                <th data-sort="change">Изменение <span id="sort-change" class="sort-icon"></span></th>
+                                <th>Источник</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody">
+                            <!-- Data populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pagination Mock -->
+            <div style="display: flex; justify-content: space-between; align-items: center;" class="mb-3">
+                <span class="text-muted">Показано 1-12 из 12 записей</span>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-outline" disabled>Назад</button>
+                    <button class="btn btn-primary" style="padding: 0.5rem 1rem;">1</button>
+                    <button class="btn btn-outline" disabled>Вперед</button>
+                </div>
+            </div>
+
+            <div class="accordion mb-3">
+                <div class="accordion-header">
+                    <span>Методология сбора данных</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-body">
+                    <p class="text-muted" style="margin-top: 1rem;">
+                        Сбор данных осуществляется еженедельно территориальными подразделениями Службы антимонопольного
+                        регулирования. Мониторинг охватывает крупные розничные торговые сети, оптово-розничные рынки и
+                        социально значимые торговые точки по 18 основным продовольственным товарам.
+                    </p>
+                    <p class="text-muted" style="margin-top: 0.5rem;">
+                        Средние цены вычисляются на основе выборки минимум из 3 точек в каждом регионе. В таблицу
+                        выводятся агрегированные медианные значения на дату мониторинга.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="grid">
+                <div class="col-6">
+                    <p>© 2026 Служба антимонопольного регулирования при Министерстве экономики и коммерции Кыргызской
+                        Республики.</p>
+                </div>
+                <div class="col-6" style="text-align: right;">
+                    <div class="footer-links" style="justify-content: flex-end;">
+                        <a href="#">Политика конфиденциальности</a>
+                        <a href="#">Доступность среды</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Report Modal -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-close>×</button>
+            <h3 class="mb-1">Сообщить о завышении цен</h3>
+            <p class="text-muted mb-2">Пожалуйста, заполните форму. Ваши контактные данные защищены.</p>
+
+            <form class="feedback-form">
+                <!-- same fields as index -->
+                <div class="form-group">
+                    <label class="form-label">ФИО</label>
+                    <input type="text" class="form-control" required placeholder="Введите ваше имя">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Телефон или Email</label>
+                    <input type="text" class="form-control" required placeholder="0555 123 456">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Регион и адрес магазина</label>
+                    <input type="text" class="form-control" required placeholder="г. Бишкек, ул. ...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Описание</label>
+                    <textarea class="form-control" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label style="display:flex; gap: 10px; align-items: flex-start; font-size: 0.9rem;">
+                        <input type="checkbox" required style="margin-top: 4px;">
+                        <span>Согласен на обработку персональных данных.</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

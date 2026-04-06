@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости | Антимонопольное регулирование КР</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-title">
+                <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7L3 11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11L21 7L12 2Z"
+                        fill="#3b82f6" />
+                </svg>
+                <span>Антимонопольное регулирование КР</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <nav class="navbar" id="navbar">
+                <a href="index.html">Главная</a>
+                <a href="data.html">Данные</a>
+                <a href="analytics.html">Аналитика</a>
+                <a href="about.html">О проекте</a>
+                <a href="news.html" class="active">Новости</a>
+                <a href="contact.html">Контакты</a>
+                <button class="btn btn-primary" data-modal-target="reportModal">Сообщить о завышении цен</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-3">
+        <div class="container fade-in">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 2rem;">
+                <h1>Новости и объявления</h1>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <input type="text" class="form-control" placeholder="Поиск по новостям..." style="width: 300px;">
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col-4">
+                    <div class="card" style="display: flex; flex-direction: column; height: 100%;">
+                        <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 0.5rem;">24 Февраля 2026</div>
+                        <h3 class="mb-1">Введен временный контроль цен на муку первого сорта</h3>
+                        <p class="text-muted" style="flex: 1; margin-bottom: 1rem;">
+                            В связи с резким колебанием оптовых цен, Кабинет Министров принял постановление о временном
+                            регулировании стоимости муки на рынках страны.
+                        </p>
+                        <a href="#" class="btn btn-outline" style="align-self: flex-start;"
+                            onclick="alert('Открытие новости...'); return false;">Подробнее</a>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="card" style="display: flex; flex-direction: column; height: 100%;">
+                        <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 0.5rem;">20 Февраля 2026</div>
+                        <h3 class="mb-1">Итоги рейдов в регионах: выявлены факты завышения цен на сахар</h3>
+                        <p class="text-muted" style="flex: 1; margin-bottom: 1rem;">
+                            Сотрудники ведомства провели инспекционные проверки в Чуйской и Ошской областях. По итогам
+                            рейдов выписано 12 предписаний владельцам торговых точек.
+                        </p>
+                        <a href="#" class="btn btn-outline" style="align-self: flex-start;"
+                            onclick="alert('Открытие новости...'); return false;">Подробнее</a>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="card" style="display: flex; flex-direction: column; height: 100%;">
+                        <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 0.5rem;">15 Февраля 2026</div>
+                        <h3 class="mb-1">Обновлена платформа мониторинга цен</h3>
+                        <p class="text-muted" style="flex: 1; margin-bottom: 1rem;">
+                            Запущен новый дизайн портала. Улучшена производительность и добавлена возможность
+                            интерактивного просмотра аналитических данных.
+                        </p>
+                        <a href="#" class="btn btn-outline" style="align-self: flex-start;"
+                            onclick="alert('Открытие новости...'); return false;">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <button class="btn btn-outline">Загрузить еще</button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer mt-3">
+        <div class="container">
+            <div class="grid">
+                <div class="col-6">
+                    <p>© 2026 Служба антимонопольного регулирования КР.</p>
+                </div>
+                <div class="col-6" style="text-align: right;">
+                    <div class="footer-links" style="justify-content: flex-end;">
+                        <a href="#">Политика конфиденциальности</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-close>×</button>
+            <h3 class="mb-1">Сообщить о завышении цен</h3>
+            <form class="feedback-form">
+                <div class="form-group"><input type="text" class="form-control" placeholder="ФИО"></div>
+                <div class="form-group"><input type="text" class="form-control" placeholder="Телефон"></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

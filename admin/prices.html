@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мониторинг Цен — Панель Администратора | Регулятор КР</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body class="admin-body">
+
+    <!-- Top Navbar -->
+    <header class="admin-header">
+        <div class="header-brand">
+            <span class="brand-title">Антимонопольное Регулирование КР</span>
+        </div>
+        <div class="header-user">
+            <span id="userNameDisplay">...</span>
+            <button id="logoutBtn" class="btn btn-outline btn-sm">Выйти</button>
+        </div>
+    </header>
+
+    <div class="admin-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">📊</span> Дашборд
+                </a>
+                <a href="prices.html" class="nav-item active">
+                    <span class="nav-icon">🏷️</span> Мониторинг Цен
+                </a>
+                <a href="#" class="nav-item disabled" title="В разработке">
+                    <span class="nav-icon">📰</span> Новости
+                </a>
+                <a href="#" class="nav-item disabled" title="В разработке">
+                    <span class="nav-icon">⚙️</span> Настройки
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="page-header d-flex justify-between align-center">
+                <div>
+                    <h1>Мониторинг Цен (СЗП)</h1>
+                    <p>Управление записями цен социально значимых продуктов по регионам.</p>
+                </div>
+                <div class="page-actions">
+                    <button class="btn btn-outline" id="btnExportCSV">⬇️ Экспорт CSV</button>
+                    <button class="btn btn-outline" id="btnOpenImportModal">⬆️ Импорт CSV</button>
+                    <button class="btn btn-primary" id="btnOpenAddModal">➕ Добавить запись</button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="card mb-4">
+                <div class="card-body filters-bar">
+                    <div class="form-group filter-item">
+                        <label>Регион</label>
+                        <select id="filterRegion" class="input-sm">
+                            <option value="">Все регионы</option>
+                        </select>
+                    </div>
+                    <div class="form-group filter-item">
+                        <label>Продукт</label>
+                        <select id="filterProduct" class="input-sm">
+                            <option value="">Все продукты</option>
+                        </select>
+                    </div>
+                    <div class="form-group filter-item">
+                        <label>Дата с</label>
+                        <input type="date" id="filterDateFrom" class="input-sm">
+                    </div>
+                    <div class="form-group filter-item">
+                        <label>Дата по</label>
+                        <input type="date" id="filterDateTo" class="input-sm">
+                    </div>
+                    <div class="form-group filter-item" style="flex:2">
+                        <label>Поиск</label>
+                        <input type="text" id="filterSearch" class="input-sm" placeholder="Поиск...">
+                    </div>
+                    <div class="filter-actions">
+                        <button class="btn btn-primary btn-sm mt-label" id="btnApplyFilters">Применить</button>
+                        <button class="btn btn-text btn-sm mt-label" id="btnResetFilters">Сбросить</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="data-table" id="pricesTable">
+                        <thead>
+                            <tr>
+                                <th>Дата ↓</th>
+                                <th>Регион</th>
+                                <th>Продукт</th>
+                                <th>Ед.изм</th>
+                                <th>Цена (сом)</th>
+                                <th>Изм. %</th>
+                                <th>Источник</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr>
+                                <td colspan="8" class="text-center">Загрузка данных...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-bar" id="paginationBar">
+                    <!-- Pagination goes here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+
+    <!-- Add/Edit Modal -->
+    <div id="recordModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Добавить запись</h2>
+                <button class="btn-close" id="btnCloseModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="recordForm">
+                    <input type="hidden" id="recordId">
+                    <div class="form-group">
+                        <label required>Дата</label>
+                        <input type="date" id="docDate" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label required>Регион</label>
+                        <select id="docRegion" name="region_id" required>
+                            <option value="">Выберите...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label required>Продукт</label>
+                        <select id="docProduct" name="product_id" required>
+                            <option value="">Выберите...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label required>Цена (сом)</label>
+                        <input type="number" step="0.01" min="0" id="docPrice" name="price_som" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Изменение % (оставьте пустым для авторасчета)</label>
+                        <input type="number" step="0.01" id="docChange" name="change_pct"
+                            placeholder="Например: 2.5 или -1.2">
+                    </div>
+                    <div class="form-group">
+                        <label>Источник</label>
+                        <select id="docSource" name="source_id">
+                            <option value="">Выберите (опционально)...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Примечание</label>
+                        <input type="text" id="docNotes" name="notes">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-end gap-2">
+                <button class="btn btn-outline" id="btnCancelModal">Отмена</button>
+                <button class="btn btn-primary" id="btnSaveRecord">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="importModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Импорт данных из CSV</h2>
+                <button class="btn-close" id="btnCloseImportModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="importForm">
+                    <p class="mb-4">Загрузите CSV файл с колонками:
+                        <code>Date, Region, Product, Price, ChangePercent, Source, Notes</code></p>
+                    <div class="form-group">
+                        <label>Выберите файл (.csv)</label>
+                        <input type="file" id="csvFileInput" accept=".csv" required>
+                    </div>
+                    <div id="importError" class="error-message hidden my-2"></div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-end gap-2">
+                <button class="btn btn-outline" id="btnCancelImportModal">Отмена</button>
+                <button class="btn btn-primary" id="btnUploadCsv">Загрузить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-overlay hidden">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2>Подтверждение</h2>
+                <button class="btn-close" id="btnCloseDeleteModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить эту запись? Действие нельзя отменить.</p>
+                <input type="hidden" id="deleteFormId">
+            </div>
+            <div class="modal-footer d-flex justify-end gap-2">
+                <button class="btn btn-outline" id="btnCancelDeleteModal">Отмена</button>
+                <button class="btn btn-danger" id="btnConfirmDelete">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/prices.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            document.getElementById('logoutBtn').addEventListener('click', async () => {
+                await API.logout();
+                window.location.href = 'login.html';
+            });
+
+            try {
+                const me = await API.getMe();
+                document.getElementById('userNameDisplay').textContent = me.name;
+            } catch (ignored) { } // Let prices page handle redirect
+        });
+    </script>
+</body>
+
+</html>

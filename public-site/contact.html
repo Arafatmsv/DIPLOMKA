@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты | Антимонопольное регулирование КР</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-title">
+                <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7L3 11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11L21 7L12 2Z"
+                        fill="#3b82f6" />
+                </svg>
+                <span>Антимонопольное регулирование КР</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <nav class="navbar" id="navbar">
+                <a href="index.html">Главная</a>
+                <a href="data.html">Данные</a>
+                <a href="analytics.html">Аналитика</a>
+                <a href="about.html">О проекте</a>
+                <a href="news.html">Новости</a>
+                <a href="contact.html" class="active">Контакты</a>
+                <button class="btn btn-primary" data-modal-target="reportModal">Сообщить о завышении цен</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-4">
+        <div class="container fade-in">
+            <h1 class="mb-3 text-center">Контактная информация</h1>
+
+            <div class="grid">
+                <div class="col-5">
+                    <div class="card" style="height: 100%; border-top: 4px solid var(--color-primary);">
+                        <h3 class="mb-2">Центральный аппарат</h3>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <strong style="display: block; margin-bottom: 0.25rem;">Официальный адрес:</strong>
+                            <p class="text-muted">г. Бишкек, ул. Байтик Батыра, 7Б</p>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <strong style="display: block; margin-bottom: 0.25rem;">Телефоны доверия:</strong>
+                            <p class="text-muted">+996 (312) 56-33-05</p>
+                            <p class="text-muted">+996 (312) 56-33-50</p>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <strong style="display: block; margin-bottom: 0.25rem;">Email:</strong>
+                            <p><a href="mailto:info@antimonopolia.kg">info@antimonopolia.kg</a></p>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <strong style="display: block; margin-bottom: 0.25rem;">График работы:</strong>
+                            <p class="text-muted">Пн-Пт: 09:00 - 18:00 (обед 12:30 - 13:30)</p>
+                            <p class="text-muted">Сб-Вс: Выходные</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-7">
+                    <div class="card">
+                        <h3 class="mb-2">Обратная связь (Жалоба)</h3>
+                        <p class="text-muted mb-2">Вы можете направить обращение о необоснованном росте цен прямо с
+                            сайта. Заполните форму, и мы свяжемся с вами.</p>
+                        <form class="feedback-form">
+                            <div class="grid" style="gap: 15px;">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Ваше ФИО <span class="text-muted">*</span></label>
+                                        <input type="text" class="form-control" required
+                                            placeholder="Иванов Иван Иванович">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Телефон / Email <span
+                                                class="text-muted">*</span></label>
+                                        <input type="text" class="form-control" required placeholder="+996 555 123 456">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Регион и адрес магазина <span
+                                                class="text-muted">*</span></label>
+                                        <input type="text" class="form-control" required
+                                            placeholder="г. Бишкек, ул. Токтогула, 125 (супермаркет)">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Суть обращения <span
+                                                class="text-muted">*</span></label>
+                                        <textarea class="form-control" rows="5" required
+                                            placeholder="Укажите наименование продукта и цены..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label
+                                            style="display:flex; gap: 10px; align-items: flex-start; font-size: 0.9rem;">
+                                            <input type="checkbox" required style="margin-top: 4px;">
+                                            <span>Согласен на обработку персональных данных в рамках рассмотрения
+                                                обращения в соответствии с законодательством КР.</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary" style="padding: 1rem 2rem;">Отправить
+                                        обращение</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer mt-3">
+        <div class="container">
+            <div class="grid">
+                <div class="col-6">
+                    <p>© 2026 Служба антимонопольного регулирования КР.</p>
+                </div>
+                <div class="col-6" style="text-align: right;">
+                    <div class="footer-links" style="justify-content: flex-end;">
+                        <a href="#">Политика конфиденциальности</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for the top button -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-close>×</button>
+            <h3 class="mb-1">Быстрое сообщение</h3>
+            <form class="feedback-form">
+                <div class="form-group"><input type="text" class="form-control" placeholder="ФИО"></div>
+                <div class="form-group"><input type="text" class="form-control" placeholder="Телефон"></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

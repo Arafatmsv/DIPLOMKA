@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О проекте | Антимонопольное регулирование КР</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-title">
+                <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7L3 11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11L21 7L12 2Z"
+                        fill="#3b82f6" />
+                </svg>
+                <span>Антимонопольное регулирование КР</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <nav class="navbar" id="navbar">
+                <a href="index.html">Главная</a>
+                <a href="data.html">Данные</a>
+                <a href="analytics.html">Аналитика</a>
+                <a href="about.html" class="active">О проекте</a>
+                <a href="news.html">Новости</a>
+                <a href="contact.html">Контакты</a>
+                <button class="btn btn-primary" data-modal-target="reportModal">Сообщить о завышении цен</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-4">
+        <div class="container fade-in text-center" style="max-width: 800px;">
+            <h1 class="mb-2">О проекте</h1>
+            <p class="text-muted mb-2" style="font-size: 1.1rem; text-align: left;">
+                Проект "Мониторинг цен на социально значимые продукты" инициирован Службой антимонопольного
+                регулирования Кыргызской Республики с целью обеспечения прозрачности ценообразования на базовые товары
+                потребления.
+            </p>
+            <p class="text-muted mb-3" style="font-size: 1.1rem; text-align: left;">
+                Главная задача платформы — оперативно выявлять факты необоснованного завышения цен на местах,
+                информировать население о средних рыночных показателях и обеспечивать обратную связь между гражданами и
+                контролирующими органами.
+            </p>
+
+            <div class="grid" style="text-align: left;">
+                <div class="col-6">
+                    <div class="card" style="height: 100%;">
+                        <h3 class="mb-1">Цели</h3>
+                        <ul class="text-muted" style="list-style-type: disc; margin-left: 20px;">
+                            <li class="mb-1">Стабилизация цен на внутреннем рынке</li>
+                            <li class="mb-1">Защита прав потребителей от монопольных сговоров</li>
+                            <li class="mb-1">Обеспечение продовольственной безопасности</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card" style="height: 100%;">
+                        <h3 class="mb-1">Правовая база</h3>
+                        <p class="text-muted mb-1">
+                            Мониторинг осуществляется в соответствии с Законом КР «О конкуренции» и постановлениями
+                            Кабинета Министров по регулированию цен на социально значимые товары.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer mt-3">
+        <div class="container">
+            <div class="grid">
+                <div class="col-6">
+                    <p>© 2026 Служба антимонопольного регулирования КР.</p>
+                </div>
+                <div class="col-6" style="text-align: right;">
+                    <div class="footer-links" style="justify-content: flex-end;">
+                        <a href="#">Политика конфиденциальности</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-close>×</button>
+            <h3 class="mb-1">Сообщить о завышении цен</h3>
+            <form class="feedback-form">
+                <div class="form-group"><input type="text" class="form-control" placeholder="ФИО"></div>
+                <div class="form-group"><input type="text" class="form-control" placeholder="Телефон"></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

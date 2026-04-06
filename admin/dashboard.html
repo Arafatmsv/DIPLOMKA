@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дашборд — Панель Администратора | Антимонопольное регулирование КР</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body class="admin-body">
+
+    <!-- Top Navbar -->
+    <header class="admin-header">
+        <div class="header-brand">
+            <span class="brand-title">Антимонопольное Регулирование КР</span>
+        </div>
+        <div class="header-user">
+            <span id="userNameDisplay">Администратор</span>
+            <button id="logoutBtn" class="btn btn-outline btn-sm">Выйти</button>
+        </div>
+    </header>
+
+    <div class="admin-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <span class="nav-icon">📊</span> Дашборд
+                </a>
+                <a href="prices.html" class="nav-item">
+                    <span class="nav-icon">🏷️</span> Мониторинг Цен
+                </a>
+                <!-- Future sections -->
+                <a href="#" class="nav-item disabled" title="В разработке">
+                    <span class="nav-icon">📰</span> Новости (скоро)
+                </a>
+                <a href="#" class="nav-item disabled" title="В разработке">
+                    <span class="nav-icon">⚙️</span> Настройки (скоро)
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="page-header">
+                <h1>Обзор системы</h1>
+                <p>Краткая сводка по данным мониторинга цен на СЗП.</p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-title">Всего записей цен</div>
+                    <div class="kpi-value" id="kpiTotalRecords">-</div>
+                </div>
+                <!-- 
+                <div class="kpi-card">
+                    <div class="kpi-title">Активных регионов</div>
+                    <div class="kpi-value" id="kpiRegions">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Отслеживаемых товаров</div>
+                    <div class="kpi-value" id="kpiProducts">-</div>
+                </div> 
+                -->
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h2>Краткое руководство</h2>
+                </div>
+                <div class="card-body">
+                    <p>Добро пожаловать в панель управления региональным мониторингом цен.</p>
+                    <ul>
+                        <li>Для управления записями о ценах перейдите в раздел <strong>"Мониторинг Цен"</strong>.</li>
+                        <li>Вы можете добавлять записи вручную или импортировать их пакетами через CSV файлы.</li>
+                        <li>Значения процента изменения рассчитываются автоматически на основании предыдущей записи для
+                            региона и продукта, если не указаны явно.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Verify auth and populate user name
+                const me = await API.getMe();
+                document.getElementById('userNameDisplay').textContent = me.name;
+
+                // Simple fetch for total records (hacky way using limit=1 just to get meta)
+                const data = await API.getPrices({ limit: 1 });
+                document.getElementById('kpiTotalRecords').textContent = data.meta.total;
+
+            } catch (err) {
+                console.error("Dashboard init error", err);
+                // API.getMe will handle redirection if unauthorized
+            }
+
+            document.getElementById('logoutBtn').addEventListener('click', async () => {
+                await API.logout();
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+
+</html>

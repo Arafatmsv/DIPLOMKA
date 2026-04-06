@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аналитика | Антимонопольное регулирование КР</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-title">
+                <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7L3 11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11L21 7L12 2Z"
+                        fill="#3b82f6" />
+                </svg>
+                <span>Антимонопольное регулирование КР</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <nav class="navbar" id="navbar">
+                <a href="index.html">Главная</a>
+                <a href="data.html">Данные</a>
+                <a href="analytics.html" class="active">Аналитика</a>
+                <a href="about.html">О проекте</a>
+                <a href="news.html">Новости</a>
+                <a href="contact.html">Контакты</a>
+                <button class="btn btn-primary" data-modal-target="reportModal">Сообщить о завышении цен</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-3">
+        <div class="container fade-in">
+            <h1 class="mb-3">Аналитика рынка</h1>
+
+            <div class="grid mb-2">
+                <div class="col-4">
+                    <div class="card" style="height: 100%;">
+                        <div class="text-muted mb-1">Средняя цена: Мука 1 сорт (кг)</div>
+                        <h2 style="color: var(--color-primary); margin: 0 0 0.5rem 0;">42.00 <span>сом</span></h2>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <span class="trend-down" style="font-weight: 600;">-1.5%</span>
+                            <span class="text-muted" style="font-size: 0.85rem;">за неделю</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card" style="height: 100%;">
+                        <div class="text-muted mb-1">Средняя цена: Сахар (кг)</div>
+                        <h2 style="color: var(--color-primary); margin: 0 0 0.5rem 0;">85.00 <span>сом</span></h2>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <span class="trend-up" style="font-weight: 600;">+2.1%</span>
+                            <span class="text-muted" style="font-size: 0.85rem;">за неделю</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card" style="height: 100%; border-left: 4px solid var(--color-warning);">
+                        <div class="text-muted mb-1">Отклонения норм</div>
+                        <p style="margin-bottom: 0.5rem; color: var(--color-warning); font-weight: 600;">
+                            Внимание: Наблюдается рост цен на рис (+4%) в Ошской области.
+                        </p>
+                        <a href="data.html" style="font-size: 0.9rem;">Смотреть детали</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <h3>Динамика цен: Хлеб пшеничный за 30 дней (сом)</h3>
+                <p class="text-muted mb-2">Усредненные данные по г. Бишкек</p>
+
+                <div id="priceChart"
+                    style="background: var(--color-bg); border-radius: var(--border-radius); overflow: hidden; height: 300px; width: 100%; position: relative;">
+                    <!-- SVG injected here by charts.js -->
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col-6">
+                    <div class="card">
+                        <h3 class="mb-2">Топ-5 регионов по росту цен</h3>
+                        <ul style="border-top: 1px solid var(--color-border); padding-top: 0.5rem;">
+                            <li
+                                style="padding: 0.75rem 0; border-bottom: 1px dashed var(--color-border); display: flex; justify-content: space-between;">
+                                <span>1. Ошская обл. (Рис)</span>
+                                <strong class="trend-up">+4.1%</strong>
+                            </li>
+                            <li
+                                style="padding: 0.75rem 0; border-bottom: 1px dashed var(--color-border); display: flex; justify-content: space-between;">
+                                <span>2. г. Бишкек (Масло подсолн.)</span>
+                                <strong class="trend-up">+2.5%</strong>
+                            </li>
+                            <li
+                                style="padding: 0.75rem 0; border-bottom: 1px dashed var(--color-border); display: flex; justify-content: space-between;">
+                                <span>3. Чуйская обл. (Сахар)</span>
+                                <strong class="trend-up">+2.1%</strong>
+                            </li>
+                            <li
+                                style="padding: 0.75rem 0; border-bottom: 1px dashed var(--color-border); display: flex; justify-content: space-between;">
+                                <span>4. Джалал-Абадская обл. (Яйца)</span>
+                                <strong class="trend-up">+1.8%</strong>
+                            </li>
+                            <li style="padding: 0.75rem 0; display: flex; justify-content: space-between;">
+                                <span>5. Иссык-Кульская обл. (Мясо)</span>
+                                <strong class="trend-up">+1.1%</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card"
+                        style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: var(--color-bg);">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1rem;">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <circle cx="12" cy="14" r="3"></circle>
+                            <line x1="12" y1="17" x2="12" y2="20"></line>
+                            <line x1="12" y1="11" x2="12" y2="11.01"></line>
+                        </svg>
+                        <h3 class="text-muted">Формирование отчета</h3>
+                        <p class="text-muted" style="max-width: 300px;">
+                            Полный детализированный аналитический отчет за месяц доступен для ведомственного
+                            использования.
+                        </p>
+                        <button class="btn btn-outline mt-1" disabled style="opacity: 0.6; cursor: not-allowed;">Скачать
+                            PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="grid">
+                <div class="col-6">
+                    <p>© 2026 Служба антимонопольного регулирования КР.</p>
+                </div>
+                <div class="col-6" style="text-align: right;">
+                    <div class="footer-links" style="justify-content: flex-end;">
+                        <a href="#">Политика конфиденциальности</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-content">
+            <button class="modal-close" data-modal-close>×</button>
+            <h3 class="mb-1">Сообщить о завышении цен</h3>
+            <form class="feedback-form">
+                <div class="form-group">
+                    <input type="text" class="form-control" required placeholder="ФИО">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" required placeholder="Телефон">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/charts.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
