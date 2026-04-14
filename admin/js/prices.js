@@ -12,6 +12,8 @@ let state = {
         date_to: '',
         q: ''
     },
+    sortCol: 'date',
+    sortDesc: true,
     regions: [],
     products: [],
     sources: []
@@ -44,10 +46,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadDirectories() {
     try {
-        [state.regions, state.products, state.sources] = await Promise.all([
+        [state.regions, state.products] = await Promise.all([
             API.getRegions(),
-            API.getProducts(),
-            API.getSources()
+            API.getProducts()
         ]);
 
         populateDropdown('filterRegion', state.regions);
@@ -55,7 +56,6 @@ async function loadDirectories() {
 
         populateDropdown('docRegion', state.regions);
         populateDropdown('docProduct', state.products);
-        populateDropdown('docSource', state.sources);
     } catch (err) {
         showToast('Ошибка загрузки справочников: ' + err.message, 'error');
     }
@@ -84,6 +84,7 @@ async function loadData(page = 1) {
     try {
         const params = {
             ...state.filters,
+            sort: `${state.sortCol} ${state.sortDesc ? 'DESC' : 'ASC'}`,
             page: state.meta.page,
             limit: state.meta.limit
         };
@@ -117,22 +118,36 @@ function renderTable() {
 
         return `
             <tr>
-                <td>${row.date}</td>
+                <td>${formatDateDisplay(row.date)}</td>
                 <td>${row.region_name || '—'}</td>
                 <td>${row.product_name || '—'}</td>
                 <td>${row.unit || '—'}</td>
                 <td class="font-medium">${price}</td>
                 <td class="${changeClass}">${changeText}</td>
-                <td><small>${row.source_name || '—'}</small></td>
+                <td><small>${row.source_text || row.source_name || '—'}</small></td>
                 <td>
                     <div class="action-buttons">
-                        <button class="btn-icon text-primary" onclick="editRecord(${row.id})" title="Редактировать">✏️</button>
-                        <button class="btn-icon text-danger" onclick="confirmDelete(${row.id})" title="Удалить">🗑️</button>
+                        <button class="btn-icon edit-action" onclick="editRecord(${row.id})" title="Редактировать" data-rbac-module="prices" data-rbac-action="Update" data-rbac-behavior="disable">
+                            <svg class="icon-action" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.89 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.89l12.675-12.687z"/>
+                                <path d="M19.5 7.125L16.862 4.487"/>
+                            </svg>
+                        </button>
+                        <button class="btn-icon delete-action" onclick="confirmDelete(${row.id})" title="Удалить" data-rbac-module="prices" data-rbac-action="Delete" data-rbac-behavior="disable">
+                            <svg class="icon-action" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+                            </svg>
+                        </button>
                     </div>
                 </td>
             </tr>
         `;
     }).join('');
+    
+    // Apply RBAC to newly rendered buttons
+    if (typeof RBAC !== 'undefined' && RBAC.user) {
+        RBAC.applyToDOM();
+    }
 }
 
 function renderPagination() {
@@ -187,9 +202,49 @@ function setupEventListeners() {
     });
 
     // --- Export ---
-    document.getElementById('btnExportCSV').addEventListener('click', () => {
-        const url = API.getExportUrl(state.filters);
-        window.location.href = url; // trigger download
+    document.getElementById('btnExportExcel').addEventListener('click', () => {
+        if (!state.data.length) return showToast('Нет данных для экспорта', 'error');
+        const ws = XLSX.utils.json_to_sheet(state.data.map(d => ({
+            'Дата': formatDateDisplay(d.date),
+            'Регион': d.region_name,
+            'Продукт': d.product_name,
+            'Ед.изм': d.unit,
+            'Цена (сом)': d.price_som,
+            'Изм. %': d.change_pct,
+            'Источник': d.source_name
+        })));
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Мониторинг Цен");
+        XLSX.writeFile(wb, "Цена_Мониторинг.xlsx");
+    });
+
+    document.getElementById('btnExportPDF').addEventListener('click', () => {
+        if (!state.data.length) return showToast('Нет данных для экспорта', 'error');
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Add Base64 Cyrillic Font
+        doc.addFileToVFS("Roboto-Regular.ttf", window.RobotoRegularBase64);
+        doc.addFont("Roboto-Regular.ttf", "Roboto", "normal");
+        doc.setFont("Roboto");
+        
+        doc.setFontSize(16);
+        doc.text("Отчет по мониторингу цен", 14, 15);
+        
+        const tableColumn = ["Дата", "Регион", "Продукт", "Ед.изм", "Цена (сом)", "Изм. %", "Источник"];
+        const tableRows = state.data.map(d => [
+            formatDateDisplay(d.date), d.region_name, d.product_name, d.unit || '', 
+            d.price_som, d.change_pct || '', d.source_name
+        ]);
+        
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+            startY: 20,
+            styles: { font: "Roboto", fontStyle: "normal" }
+        });
+        
+        doc.save("Цена_Мониторинг.pdf");
     });
 
     // --- Add Modal ---
@@ -213,9 +268,9 @@ function setupEventListeners() {
             const formData = new FormData(recordForm);
             const data = Object.fromEntries(formData.entries());
 
-            // Explicitly handle empty number fields properly
+            // Explicitly handle empty fields properly
             if (!data.change_pct) data.change_pct = null;
-            if (!data.source_id) data.source_id = null;
+            if (!data.source_text) data.source_text = null;
 
             data.price_som = parseFloat(data.price_som);
             data.region_id = parseInt(data.region_id);
@@ -264,36 +319,63 @@ function setupEventListeners() {
     document.getElementById('btnOpenImportModal').addEventListener('click', () => {
         importModal.classList.remove('hidden');
         document.getElementById('importError').classList.add('hidden');
-        document.getElementById('csvFileInput').value = '';
+        document.getElementById('excelFileInput').value = '';
     });
 
     document.getElementById('btnCloseImportModal').addEventListener('click', () => importModal.classList.add('hidden'));
     document.getElementById('btnCancelImportModal').addEventListener('click', () => importModal.classList.add('hidden'));
 
-    document.getElementById('btnUploadCsv').addEventListener('click', async () => {
-        const fileInput = document.getElementById('csvFileInput');
+    document.getElementById('btnUploadExcel').addEventListener('click', async () => {
+        const fileInput = document.getElementById('excelFileInput');
         if (!fileInput.files.length) {
-            alert('Пожалуйста, выберите файл CSV');
+            alert('Пожалуйста, выберите файл Excel');
             return;
         }
 
         const file = fileInput.files[0];
-        const btn = document.getElementById('btnUploadCsv');
+        const btn = document.getElementById('btnUploadExcel');
         const errDiv = document.getElementById('importError');
 
         btn.disabled = true;
-        btn.textContent = 'Загрузка...';
+        btn.textContent = 'Обработка...';
         errDiv.classList.add('hidden');
 
         try {
-            const resp = await API.importCsv(file);
-            showToast(resp.message || 'Импорт завершен');
-            importModal.classList.add('hidden');
-            loadData(1);
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const json = XLSX.utils.sheet_to_json(worksheet);
+
+                    const resp = await API.request('/api/prices/bulk', {
+                        method: 'POST',
+                        body: JSON.stringify({ records: json })
+                    });
+
+                    showToast(resp.message || 'Импорт завершен');
+                    importModal.classList.add('hidden');
+                    loadData(1);
+                } catch (parseErr) {
+                    errDiv.textContent = 'Ошибка при чтении Excel: ' + parseErr.message;
+                    errDiv.classList.remove('hidden');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Загрузить';
+                }
+            };
+            reader.onerror = () => {
+                errDiv.textContent = 'Ошибка при чтении файла.';
+                errDiv.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Загрузить';
+            };
+            reader.readAsArrayBuffer(file);
         } catch (err) {
             errDiv.textContent = err.message;
             errDiv.classList.remove('hidden');
-        } finally {
             btn.disabled = false;
             btn.textContent = 'Загрузить';
         }
@@ -323,7 +405,7 @@ function openRecordModal(record = null) {
         document.getElementById('docProduct').value = record.product_id;
         document.getElementById('docPrice').value = record.price_som;
         document.getElementById('docChange').value = record.change_pct !== null ? record.change_pct : '';
-        document.getElementById('docSource').value = record.source_id || '';
+        document.getElementById('docSource').value = record.source_text || '';
         document.getElementById('docNotes').value = record.notes || '';
     } else {
         modalTitle.textContent = 'Добавить запись';
@@ -342,3 +424,18 @@ function closeRecordModal() {
 function closeDeleteModal() {
     deleteModal.classList.add('hidden');
 }
+
+// ── Sorting ──
+window.sortPrices = function(col) {
+    if (state.sortCol === col) {
+        state.sortDesc = !state.sortDesc;
+    } else {
+        state.sortCol = col;
+        state.sortDesc = true;
+    }
+    // Update arrow indicators
+    document.querySelectorAll('.sort-arrow').forEach(el => el.textContent = '');
+    const iconEl = document.getElementById(`sort-${col}`);
+    if (iconEl) iconEl.textContent = state.sortDesc ? '↓' : '↑';
+    loadData(1);
+};

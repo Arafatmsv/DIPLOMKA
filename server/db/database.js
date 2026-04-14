@@ -18,9 +18,10 @@ const schema = `
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    email TEXT UNIQUE NOT NULL,
+    username TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
-    role TEXT NOT NULL DEFAULT 'Viewer', -- 'Admin', 'Editor', 'Viewer'
+    role TEXT NOT NULL DEFAULT 'Оператор',
+    permissions TEXT,
     is_active INTEGER DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -59,6 +60,7 @@ const schema = `
     price_som REAL NOT NULL,
     change_pct REAL,
     source_id INTEGER,
+    source_text TEXT,
     notes TEXT,
     is_deleted INTEGER DEFAULT 0,
     deleted_at DATETIME,

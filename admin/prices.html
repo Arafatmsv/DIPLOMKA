@@ -4,9 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мониторинг Цен — Панель Администратора | Регулятор КР</title>
+    <title>Мониторинг Цен — Панель Администратора </title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/admin.css">
+    
+    <!-- Excel & PDF Export/Import dependencies via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+    <!-- Custom Cyrillic Font -->
+    <script src="js/font-cyrillic.js"></script>
 </head>
 
 <body class="admin-body">
@@ -14,7 +21,11 @@
     <!-- Top Navbar -->
     <header class="admin-header">
         <div class="header-brand">
-            <span class="brand-title">Антимонопольное Регулирование КР</span>
+            <span class="brand-title">
+                <svg fill="none" height="28" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7L3 11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11L21 7L12 2Z" fill="#3b82f6"/>
+        </svg>
+            </span>
         </div>
         <div class="header-user">
             <span id="userNameDisplay">...</span>
@@ -26,20 +37,27 @@
         <!-- Sidebar Navigation -->
         <aside class="admin-sidebar">
             <nav class="sidebar-nav">
-                <a href="dashboard.html" class="nav-item">
-                    <span class="nav-icon">📊</span> Дашборд
+                <a href="dashboard.html" class="nav-item" data-rbac-module="analytics">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M18 20V4M6 20v-4" /></svg> Дашборд
                 </a>
-                <a href="prices.html" class="nav-item active">
-                    <span class="nav-icon">🏷️</span> Мониторинг Цен
+                <a href="prices.html" class="nav-item active" data-rbac-module="prices">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h.01M5.22 2.22l8.36.002c.53 0 1.04.21 1.41.59l7.41 7.41a2 2 0 010 2.83l-6.58 6.58a2 2 0 01-2.83 0l-7.41-7.41a2 2 0 01-.59-1.41V3.22a1 1 0 011-1z" /></svg> Мониторинг Цен
                 </a>
-                <a href="#" class="nav-item disabled" title="В разработке">
-                    <span class="nav-icon">📰</span> Новости
+                <a href="dictionaries.html" class="nav-item" data-rbac-module="dictionaries">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6l2 2h8a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V6c0-1.1.9-2 2-2z" /></svg> Справочники
                 </a>
-                <a href="#" class="nav-item disabled" title="В разработке">
-                    <span class="nav-icon">⚙️</span> Настройки
+                <a href="users.html" class="nav-item" data-rbac-admin-only="true">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg> Пользователи
+                </a>
+                <a href="#" class="nav-item disabled" title="В разработке" data-rbac-module="analytics">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h6M9 16h6M4 6v14a2 2 0 002 2h12a2 2 0 002-2V8l-6-6H6a2 2 0 00-2 2z" /></svg> Новости
+                </a>
+                <a href="#" class="nav-item disabled" title="В разработке" data-rbac-admin-only="true">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" /><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.09a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.56.2 1.09.68 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" /></svg> Настройки
                 </a>
             </nav>
         </aside>
+
 
         <!-- Main Content -->
         <main class="admin-main">
@@ -49,9 +67,30 @@
                     <p>Управление записями цен социально значимых продуктов по регионам.</p>
                 </div>
                 <div class="page-actions">
-                    <button class="btn btn-outline" id="btnExportCSV">⬇️ Экспорт CSV</button>
-                    <button class="btn btn-outline" id="btnOpenImportModal">⬆️ Импорт CSV</button>
-                    <button class="btn btn-primary" id="btnOpenAddModal">➕ Добавить запись</button>
+                    <button class="btn btn-outline" id="btnExportExcel">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Экспорт Excel
+                    </button>
+                    <button class="btn btn-outline" id="btnExportPDF">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 12h6M9 16h6M4 6v14a2 2 0 002 2h12a2 2 0 002-2V8l-6-6H6a2 2 0 00-2 2z"/>
+                        </svg>
+                        Экспорт PDF
+                    </button>
+                    <button class="btn btn-outline" id="btnOpenImportModal" data-rbac-module="prices" data-rbac-action="Create" data-rbac-behavior="disable">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Импорт Excel
+                    </button>
+                    <button class="btn btn-primary" id="btnOpenAddModal" data-rbac-module="prices" data-rbac-action="Create" data-rbac-behavior="disable">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4.5v15m7.5-7.5h-15" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Добавить запись
+                    </button>
                 </div>
             </div>
 
@@ -95,12 +134,12 @@
                     <table class="data-table" id="pricesTable">
                         <thead>
                             <tr>
-                                <th>Дата ↓</th>
-                                <th>Регион</th>
-                                <th>Продукт</th>
+                                <th class="sortable-th" data-sort="date" onclick="sortPrices('date')">Дата <span class="sort-arrow" id="sort-date">↓</span></th>
+                                <th class="sortable-th" data-sort="region" onclick="sortPrices('region')">Регион <span class="sort-arrow" id="sort-region"></span></th>
+                                <th class="sortable-th" data-sort="product" onclick="sortPrices('product')">Продукт <span class="sort-arrow" id="sort-product"></span></th>
                                 <th>Ед.изм</th>
-                                <th>Цена (сом)</th>
-                                <th>Изм. %</th>
+                                <th class="sortable-th" data-sort="price" onclick="sortPrices('price')">Цена (сом) <span class="sort-arrow" id="sort-price"></span></th>
+                                <th class="sortable-th" data-sort="change" onclick="sortPrices('change')">Изм. % <span class="sort-arrow" id="sort-change"></span></th>
                                 <th>Источник</th>
                                 <th>Действия</th>
                             </tr>
@@ -158,9 +197,7 @@
                     </div>
                     <div class="form-group">
                         <label>Источник</label>
-                        <select id="docSource" name="source_id">
-                            <option value="">Выберите (опционально)...</option>
-                        </select>
+                        <input type="text" id="docSource" name="source_text" placeholder="Например: Рынок Ошский, магазин Арууке...">
                     </div>
                     <div class="form-group">
                         <label>Примечание</label>
@@ -179,23 +216,23 @@
     <div id="importModal" class="modal-overlay hidden">
         <div class="modal">
             <div class="modal-header">
-                <h2>Импорт данных из CSV</h2>
+                <h2>Импорт данных из Excel</h2>
                 <button class="btn-close" id="btnCloseImportModal">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="importForm">
-                    <p class="mb-4">Загрузите CSV файл с колонками:
-                        <code>Date, Region, Product, Price, ChangePercent, Source, Notes</code></p>
+                    <p class="mb-4">Загрузите Excel файл со столбцами:
+                        <code>Region, Product, Price, Unit, Source, Notes</code> (или русские аналоги)</p>
                     <div class="form-group">
-                        <label>Выберите файл (.csv)</label>
-                        <input type="file" id="csvFileInput" accept=".csv" required>
+                        <label>Выберите файл (.xlsx, .xls)</label>
+                        <input type="file" id="excelFileInput" accept=".xlsx, .xls" required>
                     </div>
                     <div id="importError" class="error-message hidden my-2"></div>
                 </form>
             </div>
             <div class="modal-footer d-flex justify-end gap-2">
                 <button class="btn btn-outline" id="btnCancelImportModal">Отмена</button>
-                <button class="btn btn-primary" id="btnUploadCsv">Загрузить</button>
+                <button class="btn btn-primary" id="btnUploadExcel">Загрузить</button>
             </div>
         </div>
     </div>
@@ -221,6 +258,7 @@
     <div id="toastContainer" class="toast-container"></div>
 
     <script src="js/api.js"></script>
+    <script src="js/rbac.js"></script>
     <script src="js/prices.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -231,6 +269,7 @@
 
             try {
                 const me = await API.getMe();
+                RBAC.init(me);
                 document.getElementById('userNameDisplay').textContent = me.name;
             } catch (ignored) { } // Let prices page handle redirect
         });

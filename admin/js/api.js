@@ -1,10 +1,9 @@
 /**
- * API abstraction for simple admin portal requests
+ * API abstraction for admin portal requests
  */
 const API = {
     async handleResponse(response) {
         if (response.status === 401) {
-            // Unauthenticated
             if (!window.location.pathname.endsWith('login.html')) {
                 window.location.href = '/admin/login.html';
                 return Promise.reject('Unauthorized');
@@ -29,7 +28,6 @@ const API = {
     async request(url, options = {}) {
         const headers = { ...options.headers };
 
-        // Add JSON content type if body is object and not FormData
         if (options.body && !(options.body instanceof FormData) && typeof options.body === 'object') {
             headers['Content-Type'] = 'application/json';
             options.body = JSON.stringify(options.body);
@@ -40,10 +38,10 @@ const API = {
     },
 
     // --- Auth Endpoints ---
-    login(email, password) {
+    login(username, password) {
         return this.request('/api/auth/login', {
             method: 'POST',
-            body: { email, password }
+            body: { username, password }
         });
     },
 
@@ -61,6 +59,28 @@ const API = {
     getProducts() { return this.request('/api/products'); },
     getSources() { return this.request('/api/sources'); },
 
+    // --- Regions CRUD ---
+    createRegion(data) {
+        return this.request('/api/regions', { method: 'POST', body: data });
+    },
+    updateRegion(id, data) {
+        return this.request(`/api/regions/${id}`, { method: 'PUT', body: data });
+    },
+    deleteRegion(id) {
+        return this.request(`/api/regions/${id}`, { method: 'DELETE' });
+    },
+
+    // --- Products CRUD ---
+    createProduct(data) {
+        return this.request('/api/products', { method: 'POST', body: data });
+    },
+    updateProduct(id, data) {
+        return this.request(`/api/products/${id}`, { method: 'PUT', body: data });
+    },
+    deleteProduct(id) {
+        return this.request(`/api/products/${id}`, { method: 'DELETE' });
+    },
+
     // --- Price Records CRUD ---
     getPrices(params = {}) {
         const query = new URLSearchParams(params).toString();
@@ -77,6 +97,29 @@ const API = {
 
     deletePriceRecord(id) {
         return this.request(`/api/price-records/${id}`, { method: 'DELETE' });
+    },
+
+    // --- Users CRUD (Admin only) ---
+    getUsers() {
+        return this.request('/api/users');
+    },
+
+    createUser(data) {
+        return this.request('/api/users', { method: 'POST', body: data });
+    },
+
+    updateUser(id, data) {
+        return this.request(`/api/users/${id}`, { method: 'PUT', body: data });
+    },
+
+    deleteUser(id) {
+        return this.request(`/api/users/${id}`, { method: 'DELETE' });
+    },
+
+    // --- Audit Logs (Admin only) ---
+    getAuditLogs(params = {}) {
+        const query = new URLSearchParams(params).toString();
+        return this.request(`/api/audit-logs?${query}`);
     },
 
     // --- Utils ---
@@ -114,4 +157,21 @@ function showToast(message, type = 'success') {
         toast.classList.remove('show');
         setTimeout(() => toast.remove(), 300);
     }, 3000);
+}
+
+/**
+ * Global date display formatter.
+ * Converts ISO date strings (YYYY-MM-DD or full ISO timestamps) to DD.MM.YYYY.
+ * Only for DISPLAY — all API requests must keep ISO format.
+ */
+function formatDateDisplay(dateStr) {
+    if (!dateStr) return '—';
+    // Handle "YYYY-MM-DD" (date-only) directly without timezone issues
+    const dateOnly = dateStr.split('T')[0];
+    const parts = dateOnly.split('-');
+    if (parts.length === 3 && parts[0].length === 4) {
+        return `${parts[2]}.${parts[1]}.${parts[0]}`;
+    }
+    // Fallback for unexpected formats
+    return dateStr;
 }

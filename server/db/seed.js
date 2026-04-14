@@ -6,13 +6,21 @@ async function seed() {
     await initDb();
 
     console.log('Checking for existing Admin user...');
-    const existingAdmin = await dbGet(`SELECT id FROM users WHERE email = ?`, ['admin@example.com']);
+    const existingAdmin = await dbGet(`SELECT id FROM users WHERE username = ?`, ['admin']);
 
     if (!existingAdmin) {
         console.log('Seeding default Admin user...');
         const hash = await bcrypt.hash('Admin123!', 10);
-        await dbRun(`INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)`,
-            ['Super Admin', 'admin@example.com', hash, 'Admin']
+        const allPermissions = JSON.stringify({
+            users: ['Create', 'Read', 'Update', 'Delete'],
+            dictionaries: ['Create', 'Read', 'Update', 'Delete'],
+            prices: ['Read', 'Update', 'Delete'],
+            audit_logs: ['Read'],
+            analytics: ['Create', 'Read', 'Update', 'Delete'],
+            feedback: ['Read', 'Delete']
+        });
+        await dbRun(`INSERT INTO users (name, username, password_hash, role, permissions) VALUES (?, ?, ?, ?, ?)`,
+            ['Главный Администратор', 'admin', hash, 'Администратор', allPermissions]
         );
     }
 

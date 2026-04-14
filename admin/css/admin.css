@@ -1,25 +1,28 @@
 :root {
-    --primary: #0B3A75;
-    /* Dark navy */
-    --primary-hover: #124B91;
+    --primary: #4A90D9;
+    /* Professional blue accent */
+    --primary-hover: #3A7BC8;
+    --primary-dark: #2C5F8A;
     --secondary: #ffffff;
-    --accent: #C62828;
-    /* Kyrgyz red */
-    --accent-hover: #a51f1f;
-    --bg-light: #f4f6f9;
+    --accent: #4A90D9;
+    --accent-hover: #3A7BC8;
+    --bg-light: #f5f7fa;
     --bg-white: #ffffff;
-    --text-main: #333333;
-    --text-muted: #6c757d;
+    --text-main: #2d3748;
+    --text-muted: #718096;
     --border: #e2e8f0;
     --success: #10b981;
     --danger: #ef4444;
 
+    /* Table-specific */
+    --table-header-bg: #4A90D9;
+    --table-header-text: #ffffff;
+    --table-row-even: #eef4fb;
+    --table-row-odd: #ffffff;
+
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --radius-sm: 4px;
     --radius: 8px;
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --transition: all 0.2s ease-in-out;
 }
 
@@ -32,7 +35,7 @@
 body {
     font-family: var(--font-family);
     color: var(--text-main);
-    background-color: var(--bg-light);
+    background-color: var(--bg-white);
     line-height: 1.5;
     font-size: 14px;
 }
@@ -42,14 +45,14 @@ h1 {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: var(--primary);
+    color: var(--text-main);
 }
 
 h2 {
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: var(--primary);
+    color: var(--text-main);
 }
 
 p {
@@ -63,7 +66,7 @@ a {
 }
 
 a:hover {
-    color: var(--accent);
+    color: var(--primary-hover);
 }
 
 .text-center {
@@ -129,6 +132,7 @@ a:hover {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
     font-weight: 500;
@@ -199,10 +203,30 @@ a:hover {
     cursor: pointer;
     padding: 4px;
     border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-icon:hover {
     background-color: var(--bg-light);
+}
+
+.icon-action {
+    width: 20px;
+    height: 20px;
+    stroke: #6B7280;
+    transition: stroke 0.2s ease, transform 0.2s ease;
+}
+
+.edit-action:hover .icon-action {
+    stroke: #3b82f6;
+    transform: scale(1.1);
+}
+
+.delete-action:hover .icon-action {
+    stroke: #EF4444;
+    transform: scale(1.1);
 }
 
 /* Forms */
@@ -243,7 +267,7 @@ input:focus,
 select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(11, 58, 117, 0.1);
+    box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.1);
 }
 
 .input-sm {
@@ -267,8 +291,8 @@ select:focus {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: var(--primary);
-    background-image: radial-gradient(circle at center, #114c96 0%, #0B3A75 100%);
+    background-color: var(--bg-light);
+    background-image: linear-gradient(135deg, #e8f0fe 0%, #f5f7fa 50%, #e8f0fe 100%);
 }
 
 .login-container {
@@ -276,7 +300,7 @@ select:focus {
     max-width: 400px;
     background: var(--bg-white);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
     overflow: hidden;
 }
 
@@ -289,7 +313,7 @@ select:focus {
 .login-logo-placeholder {
     width: 60px;
     height: 60px;
-    background-color: rgba(11, 58, 117, 0.1);
+    background-color: rgba(74, 144, 217, 0.1);
     border-radius: 50%;
     margin: 0 auto 1rem;
     border: 2px solid var(--primary);
@@ -326,9 +350,9 @@ select:focus {
     align-items: center;
     padding: 0 1.5rem;
     height: 60px;
-    background-color: var(--primary);
-    color: white;
-    box-shadow: var(--shadow);
+    background-color: var(--bg-white);
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 40;
@@ -337,6 +361,7 @@ select:focus {
 .brand-title {
     font-weight: 600;
     font-size: 1.125rem;
+    color: var(--primary);
 }
 
 .header-user {
@@ -347,14 +372,14 @@ select:focus {
 }
 
 .header-user .btn-outline {
-    border-color: rgba(255, 255, 255, 0.3);
-    color: white;
+    border-color: var(--border);
+    color: var(--text-main);
 }
 
 .header-user .btn-outline:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: white;
-    color: white;
+    background-color: var(--bg-light);
+    border-color: var(--primary);
+    color: var(--primary);
 }
 
 .admin-layout {
@@ -384,7 +409,7 @@ select:focus {
 }
 
 .nav-item.active {
-    background-color: #eff6ff;
+    background-color: #eef4fb;
     color: var(--primary);
     border-left-color: var(--primary);
 }
@@ -395,15 +420,32 @@ select:focus {
     cursor: not-allowed;
 }
 
-.nav-icon {
+.nav-icon-svg {
     margin-right: 0.75rem;
-    font-size: 1.1rem;
+    width: 24px;
+    height: 24px;
+    stroke: #6B7280;
+    flex-shrink: 0;
+    transition: stroke 0.2s ease;
+}
+
+.nav-item:hover:not(.disabled) .nav-icon-svg {
+    stroke: var(--primary);
+}
+
+.nav-item.active .nav-icon-svg {
+    stroke: var(--primary);
+}
+
+.nav-item.disabled .nav-icon-svg {
+    stroke: var(--text-muted);
 }
 
 .admin-main {
     flex: 1;
     padding: 2rem;
     overflow-x: hidden;
+    background-color: var(--bg-light);
 }
 
 .page-header {
@@ -428,7 +470,6 @@ select:focus {
     padding: 1.5rem;
     border-radius: var(--radius);
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-sm);
 }
 
 .kpi-title {
@@ -449,7 +490,6 @@ select:focus {
     background: var(--bg-white);
     border-radius: var(--radius);
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-sm);
     overflow: hidden;
 }
 
@@ -504,9 +544,9 @@ select:focus {
 }
 
 .data-table th {
-    background-color: #f8fafc;
+    background-color: var(--table-header-bg);
     font-weight: 600;
-    color: var(--text-muted);
+    color: var(--table-header-text);
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -514,8 +554,16 @@ select:focus {
     top: 0;
 }
 
+.data-table tbody tr:nth-child(odd) {
+    background-color: var(--table-row-odd);
+}
+
+.data-table tbody tr:nth-child(even) {
+    background-color: var(--table-row-even);
+}
+
 .data-table tbody tr:hover {
-    background-color: var(--bg-light);
+    background-color: #dce8f7;
 }
 
 .empty-state {
@@ -573,7 +621,7 @@ select:focus {
     max-height: 90vh;
     display: flex;
     flex-direction: column;
-    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
     transform: translateY(0);
     transition: transform 0.2s;
 }
@@ -641,7 +689,7 @@ select:focus {
     color: white;
     font-weight: 500;
     font-size: 0.875rem;
-    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
     transform: translateY(100%);
     opacity: 0;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -713,4 +761,68 @@ select:focus {
         align-items: flex-start;
         gap: 1rem;
     }
+}
+
+/* Utilities */
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+/* Dictionary Tabs */
+.dict-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--border);
+}
+
+.dict-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: inherit;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.dict-tab:hover {
+    color: var(--primary);
+}
+
+.dict-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    font-weight: 600;
+}
+
+.page-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Sorting */
+.sortable-th {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.sortable-th:hover {
+    background-color: var(--primary-hover);
+}
+
+.sort-arrow {
+    display: inline-block;
+    width: 1em;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9em;
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дашборд — Панель Администратора | Антимонопольное регулирование КР</title>
+    <title>Дашборд — Панель Администратора</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/admin.css">
 </head>
@@ -14,7 +14,11 @@
     <!-- Top Navbar -->
     <header class="admin-header">
         <div class="header-brand">
-            <span class="brand-title">Антимонопольное Регулирование КР</span>
+            <span class="brand-title">
+                <svg fill="none" height="28" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L3 7L3 11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11L21 7L12 2Z" fill="#3b82f6"/>
+        </svg>
+            </span>
         </div>
         <div class="header-user">
             <span id="userNameDisplay">Администратор</span>
@@ -26,18 +30,24 @@
         <!-- Sidebar Navigation -->
         <aside class="admin-sidebar">
             <nav class="sidebar-nav">
-                <a href="dashboard.html" class="nav-item active">
-                    <span class="nav-icon">📊</span> Дашборд
+                <a href="dashboard.html" class="nav-item active" data-rbac-module="analytics">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M18 20V4M6 20v-4" /></svg> Дашборд
                 </a>
-                <a href="prices.html" class="nav-item">
-                    <span class="nav-icon">🏷️</span> Мониторинг Цен
+                <a href="prices.html" class="nav-item" data-rbac-module="prices">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h.01M5.22 2.22l8.36.002c.53 0 1.04.21 1.41.59l7.41 7.41a2 2 0 010 2.83l-6.58 6.58a2 2 0 01-2.83 0l-7.41-7.41a2 2 0 01-.59-1.41V3.22a1 1 0 011-1z" /></svg> Мониторинг Цен
+                </a>
+                <a href="dictionaries.html" class="nav-item" data-rbac-module="dictionaries">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6l2 2h8a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V6c0-1.1.9-2 2-2z" /></svg> Справочники
+                </a>
+                <a href="users.html" class="nav-item" data-rbac-admin-only="true">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg> Пользователи
                 </a>
                 <!-- Future sections -->
-                <a href="#" class="nav-item disabled" title="В разработке">
-                    <span class="nav-icon">📰</span> Новости (скоро)
+                <a href="#" class="nav-item disabled" title="В разработке" data-rbac-module="analytics">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h6M9 16h6M4 6v14a2 2 0 002 2h12a2 2 0 002-2V8l-6-6H6a2 2 0 00-2 2z" /></svg> Новости
                 </a>
-                <a href="#" class="nav-item disabled" title="В разработке">
-                    <span class="nav-icon">⚙️</span> Настройки (скоро)
+                <a href="#" class="nav-item disabled" title="В разработке" data-rbac-admin-only="true">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" /><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.09a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.56.2 1.09.68 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" /></svg> Настройки
                 </a>
             </nav>
         </aside>
@@ -46,7 +56,7 @@
         <main class="admin-main">
             <div class="page-header">
                 <h1>Обзор системы</h1>
-                <p>Краткая сводка по данным мониторинга цен на СЗП.</p>
+                <p>Краткая сводка по данным мониторинга цен на СЗТ.</p>
             </div>
 
             <div class="kpi-grid">
@@ -74,7 +84,7 @@
                     <p>Добро пожаловать в панель управления региональным мониторингом цен.</p>
                     <ul>
                         <li>Для управления записями о ценах перейдите в раздел <strong>"Мониторинг Цен"</strong>.</li>
-                        <li>Вы можете добавлять записи вручную или импортировать их пакетами через CSV файлы.</li>
+                        <li>Вы можете добавлять записи вручную или импортировать их пакетами через Excel файлы.</li>
                         <li>Значения процента изменения рассчитываются автоматически на основании предыдущей записи для
                             региона и продукта, если не указаны явно.</li>
                     </ul>
@@ -88,11 +98,13 @@
     <div id="toastContainer" class="toast-container"></div>
 
     <script src="js/api.js"></script>
+    <script src="js/rbac.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 // Verify auth and populate user name
                 const me = await API.getMe();
+                RBAC.init(me);
                 document.getElementById('userNameDisplay').textContent = me.name;
 
                 // Simple fetch for total records (hacky way using limit=1 just to get meta)

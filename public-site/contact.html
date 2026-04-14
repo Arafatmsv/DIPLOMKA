@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Контакты | Антимонопольное регулирование КР</title>
+    <title>Контакты | Дипломная работа</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -13,114 +13,135 @@
     <header class="header">
         <div class="container">
             <div class="header-title">
-                <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <svg fill="none" height="28" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2L3 7L3 11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11L21 7L12 2Z"
                         fill="#3b82f6" />
                 </svg>
-                <span>Антимонопольное регулирование КР</span>
             </div>
             <button class="menu-toggle" id="menuToggle">☰</button>
             <nav class="navbar" id="navbar">
                 <a href="index.html">Главная</a>
                 <a href="data.html">Данные</a>
                 <a href="analytics.html">Аналитика</a>
-                <a href="about.html">О проекте</a>
-                <a href="news.html">Новости</a>
                 <a href="contact.html" class="active">Контакты</a>
-                <button class="btn btn-primary" data-modal-target="reportModal">Сообщить о завышении цен</button>
+                <button class="btn btn-primary btn-nav-cta" data-modal-target="reportModal">Сообщить о завышении цен</button>
             </nav>
         </div>
     </header>
 
     <main class="py-4">
         <div class="container fade-in">
-            <h1 class="mb-3 text-center">Контактная информация</h1>
-
-            <div class="grid">
-                <div class="col-5">
-                    <div class="card" style="height: 100%; border-top: 4px solid var(--color-primary);">
-                        <h3 class="mb-2">Центральный аппарат</h3>
-
-                        <div style="margin-bottom: 1.5rem;">
-                            <strong style="display: block; margin-bottom: 0.25rem;">Официальный адрес:</strong>
-                            <p class="text-muted">г. Бишкек, ул. Байтик Батыра, 7Б</p>
-                        </div>
-
-                        <div style="margin-bottom: 1.5rem;">
-                            <strong style="display: block; margin-bottom: 0.25rem;">Телефоны доверия:</strong>
-                            <p class="text-muted">+996 (312) 56-33-05</p>
-                            <p class="text-muted">+996 (312) 56-33-50</p>
-                        </div>
-
-                        <div style="margin-bottom: 1.5rem;">
-                            <strong style="display: block; margin-bottom: 0.25rem;">Email:</strong>
-                            <p><a href="mailto:info@antimonopolia.kg">info@antimonopolia.kg</a></p>
-                        </div>
-
-                        <div style="margin-bottom: 1.5rem;">
-                            <strong style="display: block; margin-bottom: 0.25rem;">График работы:</strong>
-                            <p class="text-muted">Пн-Пт: 09:00 - 18:00 (обед 12:30 - 13:30)</p>
-                            <p class="text-muted">Сб-Вс: Выходные</p>
+            <!-- ASYMMETRICAL LIGHT BENTO GRID -->
+            <div class="light-bento-grid mb-3">
+                
+                <!-- LEFT COLUMN: STACKED CARDS -->
+                <div class="left-stack">
+                    
+                    <!-- TOP LEFT CARD (Email Core) -->
+                    <div class="bento-light-card">
+                        <h2 class="mb-1" style="font-size: 1.75rem; font-weight: 700; color: var(--color-text-main); display:flex; align-items:center; gap: 12px;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Свяжитесь с нами
+                        </h2>
+                        <p class="card-desc mb-2">Связаться с аналитическим отделом по вопросам мониторинга.</p>
+                        
+                        <a href="mailto:info@antimonopol.kg" class="email-action-block">
+                            <span>info@antimonopol.kg</span>
+                            <div class="action-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- BOTTOM LEFT CARD (Phone & Socials) -->
+                    <div class="bento-light-card">
+                        <p class="phone-label mb-1" style="display:flex; align-items:center; gap: 8px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Региональные консультации:
+                        </p>
+                        <h2 class="phone-number mb-2 text-primary">0 (312) 56-33-05</h2>
+                        
+                        <div class="social-icons-wrapper">
+                            <a href="#" class="social-icon">
+                                <!-- Facebook -->
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 12C22 6.48 17.52 2 12 2C6.48 2 2 6.48 2 12C2 16.84 5.44 20.87 10 21.8V15H8V12H10V9.5C10 7.57 11.57 6 13.5 6H16V9H14C13.45 9 13 9.45 13 10V12H16V15H13V21.95C18.05 21.45 22 17.19 22 12Z"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <!-- Instagram -->
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.8 2H16.2C19.4 2 22 4.6 22 7.8V16.2C22 19.4 19.4 22 16.2 22H7.8C4.6 22 2 19.4 2 16.2V7.8C2 4.6 4.6 2 7.8 2ZM7.6 4C5.6 4 4 5.6 4 7.6V16.4C4 18.4 5.6 20 7.6 20H16.4C18.4 20 20 18.4 20 16.4V7.6C20 5.6 18.4 4 16.4 4H7.6ZM12 7.25C14.62 7.25 16.75 9.38 16.75 12C16.75 14.62 14.62 16.75 12 16.75C9.38 16.75 7.25 14.62 7.25 12C7.25 9.38 9.38 7.25 12 7.25ZM12 9.25C10.48 9.25 9.25 10.48 9.25 12C9.25 13.52 10.48 14.75 12 14.75C13.52 14.75 14.75 13.52 14.75 12C14.75 10.48 13.52 9.25 12 9.25ZM17.25 5.5C17.94 5.5 18.5 6.06 18.5 6.75C18.5 7.44 17.94 8 17.25 8C16.56 8 16 7.44 16 6.75C16 6.06 16.56 5.5 17.25 5.5Z"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <!-- LinkedIn -->
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19ZM18.5 18.5V13.2A3.26 3.26 0 0 0 15.24 9.94C14.39 9.94 13.4 10.46 12.92 11.24V10.13H10.13V18.5H12.92V13.57C12.92 12.8 13.54 12.17 14.31 12.17A1.4 1.4 0 0 1 15.71 13.57V18.5H18.5ZM6.88 8.56A1.68 1.68 0 0 0 8.56 6.88C8.56 5.95 7.81 5.2 6.88 5.2A1.68 1.68 0 0 0 5.2 6.88C5.2 7.81 5.95 8.56 6.88 8.56ZM8.27 18.5V10.13H5.5V18.5H8.27Z"/>
+                                </svg>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-7">
-                    <div class="card">
-                        <h3 class="mb-2">Обратная связь (Жалоба)</h3>
-                        <p class="text-muted mb-2">Вы можете направить обращение о необоснованном росте цен прямо с
-                            сайта. Заполните форму, и мы свяжемся с вами.</p>
-                        <form class="feedback-form">
-                            <div class="grid" style="gap: 15px;">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Ваше ФИО <span class="text-muted">*</span></label>
-                                        <input type="text" class="form-control" required
-                                            placeholder="Иванов Иван Иванович">
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Телефон / Email <span
-                                                class="text-muted">*</span></label>
-                                        <input type="text" class="form-control" required placeholder="+996 555 123 456">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label class="form-label">Регион и адрес магазина <span
-                                                class="text-muted">*</span></label>
-                                        <input type="text" class="form-control" required
-                                            placeholder="г. Бишкек, ул. Токтогула, 125 (супермаркет)">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label class="form-label">Суть обращения <span
-                                                class="text-muted">*</span></label>
-                                        <textarea class="form-control" rows="5" required
-                                            placeholder="Укажите наименование продукта и цены..."></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label
-                                            style="display:flex; gap: 10px; align-items: flex-start; font-size: 0.9rem;">
-                                            <input type="checkbox" required style="margin-top: 4px;">
-                                            <span>Согласен на обработку персональных данных в рамках рассмотрения
-                                                обращения в соответствии с законодательством КР.</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary" style="padding: 1rem 2rem;">Отправить
-                                        обращение</button>
-                                </div>
-                            </div>
-                        </form>
+                <!-- RIGHT COLUMN: TALL FEEDBACK FORM CARD -->
+                <div class="bento-light-card height-full relative" style="display: flex; flex-direction: column; justify-content: center;">
+                    <div class="feedback-header text-center">
+                        <h2 class="mb-1" style="font-size: 1.75rem; font-weight: 700; color: var(--color-text-main); display:flex; justify-content:center; align-items:center; gap: 12px;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Обратная связь
+                        </h2>
+                        <p class="text-muted" style="margin: 0 auto 1.5rem; font-size: 0.95rem;">Вы можете направить обращение о росте цен. Заполните форму, и мы свяжемся с вами.</p>
                     </div>
+                    
+                    <form class="feedback-form premium-form" style="width: 100%;">
+                        <div class="form-group mb-1">
+                            <label class="form-label" style="font-size: 0.9rem;">Ваше ФИО <span class="text-muted">*</span></label>
+                            <input type="text" class="form-control form-control-premium" required placeholder="Введите ваше ФИО" style="padding: 0.85rem 1rem;">
+                        </div>
+                        <div class="form-group mb-1">
+                            <label class="form-label" style="font-size: 0.9rem;">Телефон / Email <span class="text-muted">*</span></label>
+                            <input type="text" class="form-control form-control-premium" required placeholder="Введите номер телефона или email" style="padding: 0.85rem 1rem;">
+                        </div>
+                        <div class="form-group mb-1">
+                            <label class="form-label" style="font-size: 0.9rem;">Суть обращения <span class="text-muted">*</span></label>
+                            <textarea class="form-control form-control-premium" rows="4" required placeholder="Опишите суть вашего обращения" style="padding: 0.85rem 1rem;"></textarea>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label class="checkbox-label" style="display:flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;">
+                                <input type="checkbox" required class="premium-checkbox" style="margin-top: 3px; min-width: 16px; height: 16px;">
+                                <span style="color: var(--color-text-muted); line-height: 1.4;">Согласен на обработку персональных данных.</span>
+                            </label>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-massive" style="padding: 1rem 1.5rem; width: 100%;">Отправить</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- MAP BELOW GRID (FULL WIDTH) -->
+            <div class="bento-light-card p-0 overflow-hidden relative" style="padding: 0; min-height: 500px; margin-top: 1rem;">
+                <iframe class="map-iframe-light" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2923.8641951558907!2d74.5956094200778!3d42.87574762512683!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389ec81f919fb9db%3A0x8ac7847eb22cc24e!2sBishkek%2C%20Kyrgyzstan!5e0!3m2!1sen!2sus!4v1714000000000!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width: 100%; height: 100%; min-height: 500px; border: 0;"></iframe>
+                
+                <div class="map-footer-text-light" style="display:flex; align-items:center; gap: 8px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 10a3 3 0 11-6 0 3 3 0 016 0z" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M19.5 10c0 7.142-7.5 11.25-7.5 11.25S4.5 17.142 4.5 10a7.5 7.5 0 0115 0z" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Ознакомьтесь с расположением нашего офиса
                 </div>
             </div>
+            
         </div>
     </main>
 
@@ -141,16 +162,38 @@
 
     <!-- Modal for the top button -->
     <div class="modal-overlay" id="reportModal">
-        <div class="modal-content">
-            <button class="modal-close" data-modal-close>×</button>
-            <h3 class="mb-1">Быстрое сообщение</h3>
-            <form class="feedback-form">
-                <div class="form-group"><input type="text" class="form-control" placeholder="ФИО"></div>
-                <div class="form-group"><input type="text" class="form-control" placeholder="Телефон"></div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить</button>
-            </form>
+    <div class="modal-content">
+      <button class="modal-close" data-modal-close aria-label="Закрыть">×</button>
+      <h3 class="mb-1">Сообщить о завышении цен</h3>
+      <p class="text-muted mb-2">Пожалуйста, заполните форму.</p>
+      
+      <form class="feedback-form">
+        <div class="form-group">
+          <label class="form-label">ФИО</label>
+          <input type="text" class="form-control" required placeholder="Введите ваше имя">
         </div>
+        <div class="form-group">
+          <label class="form-label">Телефон или Email</label>
+          <input type="text" class="form-control" required placeholder="Номер телефона или email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Регион и адрес магазина</label>
+          <input type="text" class="form-control" required placeholder="Регион, город, улица, номер здания">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Описание (название товара, старая/новая цена)</label>
+          <textarea class="form-control" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+          <label style="display:flex; gap: 10px; align-items: flex-start; font-size: 0.9rem;">
+            <input type="checkbox" required style="margin-top: 4px;">
+            <span>Согласен на обработку персональных данных в рамках рассмотрения обращения.</span>
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить обращение</button>
+      </form>
     </div>
+  </div>
 
     <script src="js/main.js"></script>
 </body>

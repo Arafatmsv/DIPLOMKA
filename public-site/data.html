@@ -5,8 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Данные мониторинга цен на социально значимые продукты">
-    <title>Данные | Антимонопольное регулирование КР</title>
+    <title>Данные | Дипломная работа</title>
     <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Excel & PDF Export/Import dependencies via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+    <!-- Custom Cyrillic Font -->
+    <script src="js/font-cyrillic.js"></script>
 </head>
 
 <body>
@@ -14,21 +21,19 @@
     <header class="header">
         <div class="container">
             <div class="header-title">
-                <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <svg fill="none" height="28" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2L3 7L3 11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11L21 7L12 2Z"
                         fill="#3b82f6" />
                 </svg>
-                <span>Антимонопольное регулирование КР</span>
             </div>
             <button class="menu-toggle" id="menuToggle" aria-label="Открыть меню">☰</button>
             <nav class="navbar" id="navbar">
                 <a href="index.html">Главная</a>
                 <a href="data.html" class="active">Данные</a>
                 <a href="analytics.html">Аналитика</a>
-                <a href="about.html">О проекте</a>
-                <a href="news.html">Новости</a>
                 <a href="contact.html">Контакты</a>
-                <button class="btn btn-primary" data-modal-target="reportModal">Сообщить о завышении цен</button>
+                <button class="btn btn-primary btn-nav-cta" data-modal-target="reportModal">Сообщить о завышении
+                    цен</button>
             </nav>
         </div>
     </header>
@@ -41,9 +46,30 @@
                     <h1 style="margin-bottom: 0.5rem;">Данные мониторинга</h1>
                     <p class="text-muted">Таблица розничных цен по регионам Кыргызской Республики.</p>
                 </div>
-                <div style="display: flex; gap: 1rem;">
-                    <button class="btn btn-outline" onclick="alert('Скачивание CSV... (Mock)');">Скачать CSV</button>
-                    <button class="btn btn-outline" onclick="window.print();">Печать</button>
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                    <button class="btn btn-outline" id="btnExportExcel">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
+                        Скачать Excel
+                    </button>
+                    <button class="btn btn-outline" id="btnExportPDF">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 12h6M9 16h6M4 6v14a2 2 0 002 2h12a2 2 0 002-2V8l-6-6H6a2 2 0 00-2 2z" />
+                        </svg>
+                        Скачать PDF
+                    </button>
+                    <button class="btn btn-outline" onclick="window.print();">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0v-2.793c0-1.139.87-2.102 2.003-2.186 2.14-.158 4.31-.158 6.494 0 1.134.084 2.003 1.047 2.003 2.186v2.793z" />
+                        </svg>
+                        Печать
+                    </button>
                 </div>
             </div>
 
@@ -53,46 +79,31 @@
                     <label class="form-label" for="filterRegion">Регион</label>
                     <select id="filterRegion" class="form-control">
                         <option value="all">Все регионы</option>
-                        <option value="г. Бишкек">г. Бишкек</option>
-                        <option value="г. Ош">г. Ош</option>
-                        <option value="Чуйская обл.">Чуйская обл.</option>
-                        <option value="Ошская обл.">Ошская обл.</option>
-                        <option value="Джалал-Абадская обл.">Джалал-Абадская обл.</option>
-                        <option value="Иссык-Кульская обл.">Иссык-Кульская обл.</option>
-                        <option value="Нарынская обл.">Нарынская обл.</option>
-                        <option value="Таласская обл.">Таласская обл.</option>
-                        <option value="Баткенская обл.">Баткенская обл.</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="filterCategory">Продукт</label>
                     <select id="filterCategory" class="form-control">
-                        <option value="all">Все категории</option>
-                        <option value="bread">Хлебобулочные изделия</option>
-                        <option value="flour">Мука</option>
-                        <option value="sugar">Сахар</option>
-                        <option value="meat">Мясо</option>
-                        <option value="veg">Овощи</option>
-                        <option value="other">Остальное</option>
+                        <option value="all">Все продукты</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="filterDate">Поиск</label>
+                    <label class="form-label" for="filterSearch">Поиск</label>
                     <input type="text" id="filterSearch" class="form-control" placeholder="Название или регион...">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="filterDate">Дата (пример)</label>
-                    <input type="date" id="filterDate" class="form-control" value="2026-02-24">
+                    <label class="form-label" for="filterDate">Дата</label>
+                    <input type="date" id="filterDate" class="form-control">
                 </div>
             </div>
 
-            <div class="card mb-3" style="padding: 0;">
+            <div class="card table-card mb-3">
                 <div class="table-responsive">
-                    <table class="table" style="margin:0;">
+                    <table class="table">
                         <thead>
                             <tr>
-                                <th data-sort="date" aria-sort="descending">Дата <span id="sort-date" class="sort-icon">
-                                        ▼</span></th>
+                                <th data-sort="date" aria-sort="descending">Дата <span id="sort-date"
+                                        class="sort-icon">▼</span></th>
                                 <th data-sort="region">Регион <span id="sort-region" class="sort-icon"></span></th>
                                 <th data-sort="product">Продукт <span id="sort-product" class="sort-icon"></span></th>
                                 <th>Ед.изм</th>
@@ -102,19 +113,16 @@
                             </tr>
                         </thead>
                         <tbody id="dataTableBody">
-                            <!-- Data populated by JS -->
+                            <tr>
+                                <td colspan="7" class="text-center text-muted" style="padding:2rem;">Загрузка данных...
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
-
-            <!-- Pagination Mock -->
-            <div style="display: flex; justify-content: space-between; align-items: center;" class="mb-3">
-                <span class="text-muted">Показано 1-12 из 12 записей</span>
-                <div style="display: flex; gap: 0.5rem;">
-                    <button class="btn btn-outline" disabled>Назад</button>
-                    <button class="btn btn-primary" style="padding: 0.5rem 1rem;">1</button>
-                    <button class="btn btn-outline" disabled>Вперед</button>
+                <div class="pagination-bar" id="paginationBar">
+                    <span class="text-muted" id="paginationInfo"></span>
+                    <div style="display: flex; gap: 0.5rem;" id="paginationButtons"></div>
                 </div>
             </div>
 
@@ -130,8 +138,10 @@
                         социально значимые торговые точки по 18 основным продовольственным товарам.
                     </p>
                     <p class="text-muted" style="margin-top: 0.5rem;">
-                        Средние цены вычисляются на основе выборки минимум из 3 точек в каждом регионе. В таблицу
-                        выводятся агрегированные медианные значения на дату мониторинга.
+                        Чтобы данные в таблице были максимально точными, в каждом регионе мы берем цены как минимум из
+                        трех разных источников. После этого мы высчитываем средний показатель — это позволяет избежать
+                        случайных ошибок и показать реальную стоимость товаров, актуальную именно на день проведения
+                        мониторинга
                     </p>
                 </div>
             </div>
@@ -159,35 +169,34 @@
     <!-- Report Modal -->
     <div class="modal-overlay" id="reportModal">
         <div class="modal-content">
-            <button class="modal-close" data-modal-close>×</button>
+            <button class="modal-close" data-modal-close aria-label="Закрыть">×</button>
             <h3 class="mb-1">Сообщить о завышении цен</h3>
-            <p class="text-muted mb-2">Пожалуйста, заполните форму. Ваши контактные данные защищены.</p>
+            <p class="text-muted mb-2">Пожалуйста, заполните форму.</p>
 
             <form class="feedback-form">
-                <!-- same fields as index -->
                 <div class="form-group">
                     <label class="form-label">ФИО</label>
                     <input type="text" class="form-control" required placeholder="Введите ваше имя">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Телефон или Email</label>
-                    <input type="text" class="form-control" required placeholder="0555 123 456">
+                    <input type="text" class="form-control" required placeholder="Номер телефона или email">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Регион и адрес магазина</label>
-                    <input type="text" class="form-control" required placeholder="г. Бишкек, ул. ...">
+                    <input type="text" class="form-control" required placeholder="Регион, город, улица, номер здания">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Описание</label>
+                    <label class="form-label">Описание (название товара, старая/новая цена)</label>
                     <textarea class="form-control" rows="4" required></textarea>
                 </div>
                 <div class="form-group">
                     <label style="display:flex; gap: 10px; align-items: flex-start; font-size: 0.9rem;">
                         <input type="checkbox" required style="margin-top: 4px;">
-                        <span>Согласен на обработку персональных данных.</span>
+                        <span>Согласен на обработку персональных данных в рамках рассмотрения обращения.</span>
                     </label>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить</button>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить обращение</button>
             </form>
         </div>
     </div>

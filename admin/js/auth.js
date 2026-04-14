@@ -2,37 +2,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     if (!loginForm) return;
 
-    const emailInput = document.getElementById('email');
+    const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const errorMsg = document.getElementById('errorMsg');
+    const errorText = document.getElementById('errorText');
     const loginBtn = document.getElementById('loginBtn');
-
-    // Auto-fill credentials for demo purposes
-    emailInput.value = 'admin@example.com';
-    passwordInput.value = 'Admin123!';
 
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const email = emailInput.value.trim();
+        const username = usernameInput.value.trim().toLowerCase();
         const password = passwordInput.value;
 
-        if (!email || !password) return;
+        if (!username || !password) return;
 
         // UI state
         loginBtn.classList.add('loading');
+        loginBtn.disabled = true;
         errorMsg.classList.add('hidden');
-        errorMsg.textContent = '';
+        if (errorText) errorText.textContent = '';
 
         try {
-            await API.login(email, password);
-            // On success, redirect to dashboard
+            await API.login(username, password);
             window.location.href = 'dashboard.html';
         } catch (err) {
-            errorMsg.textContent = err.message || 'Ошибка входа. Проверьте данные.';
+            const msg = err.message || 'Ошибка входа. Проверьте данные.';
+            if (errorText) {
+                errorText.textContent = msg;
+            } else {
+                errorMsg.textContent = msg;
+            }
             errorMsg.classList.remove('hidden');
         } finally {
             loginBtn.classList.remove('loading');
+            loginBtn.disabled = false;
         }
     });
 });

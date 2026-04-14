@@ -4,76 +4,114 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Официальный портал мониторинга цен на социально значимые продукты Кыргызской Республики">
-  <title>Мониторинг цен | Антимонопольное регулирование КР</title>
+  <title>Мониторинг цен | Дипломная работа</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Excel & PDF dependencies via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+  <!-- Custom Cyrillic Font -->
+  <script src="js/font-cyrillic.js"></script>
 </head>
-<body>
+<body class="homepage-body">
 
   <header class="header">
     <div class="container">
       <div class="header-title">
-        <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        <svg fill="none" height="28" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 2L3 7L3 11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11L21 7L12 2Z" fill="#3b82f6"/>
         </svg>
-        <span>Антимонопольное регулирование КР</span>
       </div>
       <button class="menu-toggle" id="menuToggle" aria-label="Открыть меню">☰</button>
-      <nav class="navbar" id="navbar">
+        <nav class="navbar" id="navbar">
         <a href="index.html" class="active">Главная</a>
         <a href="data.html">Данные</a>
         <a href="analytics.html">Аналитика</a>
-        <a href="about.html">О проекте</a>
-        <a href="news.html">Новости</a>
         <a href="contact.html">Контакты</a>
-        <button class="btn btn-primary" data-modal-target="reportModal">Сообщить о завышении цен</button>
+        <button class="btn btn-primary btn-nav-cta" data-modal-target="reportModal">Сообщить о завышении цен</button>
       </nav>
     </div>
   </header>
 
-  <main>
-    <!-- Hero Section -->
-    <section class="py-4" style="background: var(--color-bg-white);">
-      <div class="container text-center fade-in">
-        <h1 style="max-width: 800px; margin: 0 auto 1rem;">Мониторинг цен на социально значимые продукты</h1>
-        <p class="text-muted mb-2" style="max-width: 600px; margin: 0 auto; font-size: 1.1rem;">
-          Официальный портал для отслеживания динамики цен на базовые продукты питания по всем регионам Кыргызской Республики.
-        </p>
-        <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 3rem;">
-          <a href="data.html" class="btn btn-primary">Смотреть данные</a>
-          <a href="#" class="btn btn-outline" onclick="alert('Отчет PDF загружается...'); return false;">Скачать отчёт (PDF)</a>
-        </div>
+  <main class="homepage">
 
-        <div class="grid">
-          <div class="col-4">
-            <div class="card">
-              <div class="text-muted mb-1">Обновлено</div>
-              <h3 style="color: var(--color-accent); margin:0;">24.02.2026</h3>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="card">
-              <div class="text-muted mb-1">Точек мониторинга</div>
-              <h3 style="color: var(--color-accent); margin:0;">145</h3>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="card">
-              <div class="text-muted mb-1">Категорий товаров</div>
-              <h3 style="color: var(--color-accent); margin:0;">18</h3>
-            </div>
+    <!-- ═══════════════════════════════════════════════════════════ 
+         HERO — Massive Rounded Container with Deep Blue Gradient 
+         ═══════════════════════════════════════════════════════════ -->
+    <section class="hero-section" style="position: relative; overflow: hidden; background: transparent !important;">
+      <!-- Fullscreen Video Background -->
+
+      <div class="container" style="position: relative; z-index: 1;">
+        <div class="hero-box fade-in">
+          <div class="hero-badge">Официальный портал Кыргызской Республики</div>
+          <h1 class="hero-title">Мониторинг цен<br>на социально значимые продукты</h1>
+          <p class="hero-subtitle">Официальный портал для отслеживания динамики цен на базовые продукты питания по всем регионам Кыргызской Республики.</p>
+          <div class="hero-actions">
+            <a href="data.html" class="btn btn-hero-primary">Смотреть данные</a>
+            <button id="btnHomePdf" class="btn btn-hero-outline">Скачать отчёт (PDF)</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- How it Works section -->
-    <section class="py-4">
-      <div class="container fade-in">
-        <h2 class="text-center mb-3">Как работает система</h2>
-        <div class="grid">
-          <div class="col-4 text-center">
-            <div style="margin-bottom: 1rem;">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- ═══════════════════════════════════════════════════════════ 
+         BENTO GRID — Asymmetric stat cards  
+         ═══════════════════════════════════════════════════════════ -->
+    <section class="bento-section">
+      <div class="container">
+        <div class="bento-grid fade-in">
+          <div class="bento-card bento-card--wide">
+            <div class="bento-card__tag">Данные</div>
+            <h3 class="bento-card__title">Регулярное обновление информации</h3>
+            <div class="bento-card__value" id="statUpdateDate">Загрузка...</div>
+            <p class="bento-card__text">Данные обновляются еженедельно из всех регионов Кыргызской Республики для обеспечения актуальности мониторинга.</p>
+          </div>
+          <div class="bento-card interactive-card" onclick="openPointsModal()">
+            <div class="bento-card__tag">Охват</div>
+            <h3 class="bento-card__title">Точек мониторинга</h3>
+            <div class="bento-card__value" id="statPoints">--</div>
+            <p class="bento-card__hint" style="font-size: 0.75rem; color: var(--color-blue-light); margin-top: 0.5rem; opacity: 0.8;">Нажмите, чтобы посмотреть →</p>
+          </div>
+          <div class="bento-card interactive-card" onclick="openProductsModal()">
+            <div class="bento-card__tag">Продукты</div>
+            <h3 class="bento-card__title">Категорий товаров</h3>
+            <div class="bento-card__value" id="statProducts">--</div>
+            <p class="bento-card__hint" style="font-size: 0.75rem; color: var(--color-blue-light); margin-top: 0.5rem; opacity: 0.8;">Нажмите, чтобы посмотреть →</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ 
+         ABOUT — Two-Column: Huge Heading Left, Text Right  
+         ═══════════════════════════════════════════════════════════ -->
+    <section class="about-section">
+      <div class="container">
+        <div class="about-grid fade-in">
+          <div class="about-left">
+            <div class="about-tag">О системе</div>
+            <h2 class="about-heading">Как работает<br>система</h2>
+            <a href="data.html" class="btn btn-primary btn-rounded">Перейти к данным →</a>
+          </div>
+          <div class="about-right">
+            <p>Служба антимонопольного регулирования осуществляет еженедельный мониторинг цен на социально значимые продукты по всем регионам Кыргызской Республики.</p>
+            <p>Данные собираются из розничных сетей, оптово-розничных рынков и социально значимых торговых точек для обеспечения ценовой стабильности и защиты потребителей.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════ 
+         STEPS BENTO — 3 process cards (1 wide + 2 regular)
+         ═══════════════════════════════════════════════════════════ -->
+    <section class="steps-section">
+      <div class="container">
+        <div class="bento-grid fade-in">
+          <div class="bento-card bento-card--wide bento-card--dark">
+            <div class="step-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                 <polyline points="14 2 14 8 20 8"></polyline>
                 <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -81,32 +119,33 @@
                 <polyline points="10 9 9 9 8 9"></polyline>
               </svg>
             </div>
-            <h3>1. Сбор данных</h3>
-            <p class="text-muted">Ежедневный сбор цен в розничных сетях и на рынках сотрудниками службы по всем регионам.</p>
+            <h3 class="bento-card__title">Сбор данных</h3>
+            <p class="bento-card__text">Ежедневный сбор цен в розничных сетях и на рынках сотрудниками службы по всем регионам.</p>
           </div>
-          <div class="col-4 text-center">
-            <div style="margin-bottom: 1rem;">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <div class="bento-card bento-card--accent">
+            <div class="step-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
                 <line x1="12" y1="16" x2="12" y2="12"></line>
                 <line x1="12" y1="8" x2="12.01" y2="8"></line>
               </svg>
             </div>
-            <h3>2. Проверка</h3>
-            <p class="text-muted">Анализ собранных данных на отклонения, выявление фактов необоснованного завышения.</p>
+            <h3 class="bento-card__title">Проверка</h3>
+            <p class="bento-card__text">Анализ собранных данных на отклонения, выявление фактов необоснованного завышения.</p>
           </div>
-          <div class="col-4 text-center">
-            <div style="margin-bottom: 1rem;">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <div class="bento-card">
+            <div class="step-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M2 12h4l2-9 5 18 3-9h6"></path>
               </svg>
             </div>
-            <h3>3. Публикация</h3>
-            <p class="text-muted">Размещение актуальной информации на портале для информирования граждан и бизнеса.</p>
+            <h3 class="bento-card__title">Публикация</h3>
+            <p class="bento-card__text">Размещение актуальной информации на портале для информирования граждан и бизнеса.</p>
           </div>
         </div>
       </div>
     </section>
+
   </main>
 
   <footer class="footer">
@@ -130,7 +169,7 @@
     <div class="modal-content">
       <button class="modal-close" data-modal-close aria-label="Закрыть">×</button>
       <h3 class="mb-1">Сообщить о завышении цен</h3>
-      <p class="text-muted mb-2">Пожалуйста, заполните форму. Ваши контактные данные защищены.</p>
+      <p class="text-muted mb-2">Пожалуйста, заполните форму.</p>
       
       <form class="feedback-form">
         <div class="form-group">
@@ -139,11 +178,11 @@
         </div>
         <div class="form-group">
           <label class="form-label">Телефон или Email</label>
-          <input type="text" class="form-control" required placeholder="0555 123 456">
+          <input type="text" class="form-control" required placeholder="Номер телефона или email">
         </div>
         <div class="form-group">
           <label class="form-label">Регион и адрес магазина</label>
-          <input type="text" class="form-control" required placeholder="г. Бишкек, ул. ...">
+          <input type="text" class="form-control" required placeholder="Регион, город, улица, номер здания">
         </div>
         <div class="form-group">
           <label class="form-label">Описание (название товара, старая/новая цена)</label>
@@ -160,6 +199,295 @@
     </div>
   </div>
 
+  <!-- Products Summary Modal -->
+  <div class="modal-overlay" id="productsModal">
+    <div class="modal-content premium-modal">
+      <div class="premium-modal__header">
+        <h3 class="mb-1" style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">Категории товаров</h3>
+        <button class="modal-close premium-modal__close" onclick="closeProductsModal()" aria-label="Закрыть">×</button>
+      </div>
+      <p class="text-muted mb-2">Полный список отслеживаемых социально значимых продуктов.</p>
+      <div class="premium-modal__body">
+        <ul class="products-list clean-list" id="productsListContainer">
+          <!-- Dynamically populated -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Monitoring Points Modal -->
+  <div class="modal-overlay" id="pointsModal">
+    <div class="modal-content premium-modal premium-modal--wide">
+      <div class="premium-modal__header">
+        <h3 class="mb-1" style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">Точки мониторинга</h3>
+        <button class="modal-close premium-modal__close" onclick="closePointsModal()" aria-label="Закрыть">×</button>
+      </div>
+      
+      <div class="premium-modal__filters mb-2" style="display: flex; gap: 1rem; align-items: center; margin-top: 1rem;">
+        <input type="text" id="pointSearchInput" class="form-control" placeholder="Поиск по названию..." style="flex: 1;">
+        <select id="pointRegionSelect" class="form-control" style="flex: 1;">
+          <option value="">Все регионы</option>
+          <!-- Dynamically populated -->
+        </select>
+      </div>
+
+      <div class="premium-modal__body table-responsive" style="max-height: 400px; overflow-y: auto;">
+        <table class="table" style="margin-bottom: 0;">
+          <thead style="position: sticky; top: 0; z-index: 10;">
+            <tr>
+              <th>Регион</th>
+              <th>Источник / Магазин</th>
+            </tr>
+          </thead>
+          <tbody id="pointsTableBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Hero Video Background */
+    .hero-video-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+    .hero-video-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: -1;
+    }
+
+    /* Interactive Cards */
+    .interactive-card {
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
+      position: relative;
+    }
+    .interactive-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+      border-color: var(--color-blue-100);
+    }
+    
+    /* Premium Modals additions */
+    .premium-modal {
+      border-radius: 24px;
+      padding: 2rem;
+      transform: translateY(20px) scale(0.97);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .modal-overlay.active .premium-modal {
+      transform: translateY(0) scale(1);
+    }
+    .premium-modal--wide {
+      max-width: 600px;
+    }
+    .premium-modal__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .premium-modal__close {
+      background: none;
+      border: none;
+      font-size: 1.75rem;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      padding: 4px;
+      line-height: 1;
+      border-radius: 8px;
+    }
+    .premium-modal__close:hover {
+      background: #FEE2E2;
+      color: #EF4444;
+    }
+    
+    /* Clean List for Products */
+    .clean-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-height: 350px;
+      overflow-y: auto;
+    }
+    .clean-list li {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--color-border);
+      font-weight: 500;
+      color: var(--color-primary);
+    }
+    .clean-list li:last-child {
+      border-bottom: none;
+    }
+  </style>
+
   <script src="js/main.js"></script>
+  <script>
+    let globalPointsData = [];
+    
+    // Fetch dynamic content on load
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('/api/public/stats');
+        const data = await res.json();
+        
+        // 1. Update Bento Cards
+        if (data.latest_date) {
+            // Convert 'YYYY-MM-DD' to something like 'DD.MM.YYYY'
+            const parts = data.latest_date.split('-');
+            const formattedDate = parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : data.latest_date;
+            document.getElementById('statUpdateDate').textContent = formattedDate;
+        } else {
+            document.getElementById('statUpdateDate').textContent = '--';
+        }
+        document.getElementById('statPoints').textContent = data.point_count || 0;
+        document.getElementById('statProducts').textContent = data.product_count || 0;
+        
+        // 2. Prepare Products List
+        const productsList = document.getElementById('productsListContainer');
+        if (data.products && data.products.length > 0) {
+           productsList.innerHTML = data.products.map(p => `<li>${p}</li>`).join('');
+        } else {
+           productsList.innerHTML = '<li class="text-muted">Нет данных</li>';
+        }
+        
+        // 3. Prepare Points Data
+        if (data.points) {
+            globalPointsData = data.points;
+            
+            // Populate Region Select
+            const regions = [...new Set(data.points.map(p => p.region_name))].sort();
+            const select = document.getElementById('pointRegionSelect');
+            regions.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r;
+                opt.textContent = r;
+                select.appendChild(opt);
+            });
+            
+            renderPointsTable(globalPointsData);
+        }
+      } catch(err) {
+        console.error('Failed to load dynamic stats:', err);
+      }
+      
+      // Wire up filters for Points Modal
+      document.getElementById('pointSearchInput').addEventListener('input', filterPoints);
+      document.getElementById('pointRegionSelect').addEventListener('change', filterPoints);
+    });
+
+    // Modal Controls
+    function openProductsModal() {
+        document.getElementById('productsModal').classList.add('active');
+    }
+    function closeProductsModal() {
+        document.getElementById('productsModal').classList.remove('active');
+    }
+    
+    function openPointsModal() {
+        document.getElementById('pointsModal').classList.add('active');
+    }
+    function closePointsModal() {
+        document.getElementById('pointsModal').classList.remove('active');
+    }
+    
+    // Filtering Logic for Points
+    function filterPoints() {
+        const query = document.getElementById('pointSearchInput').value.toLowerCase();
+        const region = document.getElementById('pointRegionSelect').value;
+        
+        const filtered = globalPointsData.filter(p => {
+            const matchesQuery = p.source_name.toLowerCase().includes(query) || p.region_name.toLowerCase().includes(query);
+            const matchesRegion = region ? p.region_name === region : true;
+            return matchesQuery && matchesRegion;
+        });
+        
+        renderPointsTable(filtered);
+    }
+    
+    function renderPointsTable(data) {
+        const tbody = document.getElementById('pointsTableBody');
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="2" class="text-center text-muted py-3">Не найдено</td></tr>';
+            return;
+        }
+        tbody.innerHTML = data.map(p => `
+            <tr>
+                <td style="font-weight: 500;">${p.region_name}</td>
+                <td>${p.source_name}</td>
+            </tr>
+        `).join('');
+    }
+
+    // Existing PDF Download Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnHomePdf = document.getElementById('btnHomePdf');
+      if (btnHomePdf) {
+        btnHomePdf.addEventListener('click', async () => {
+          btnHomePdf.textContent = 'Обработка...';
+          btnHomePdf.disabled = true;
+          try {
+            const res = await fetch('/api/price-records?limit=1000&page=1');
+            const result = await res.json();
+            const data = result.data || [];
+            if (!data.length) {
+              alert('Нет данных для отчета');
+              return;
+            }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            if (window.RobotoRegularBase64) {
+              doc.addFileToVFS("Roboto-Regular.ttf", window.RobotoRegularBase64);
+              doc.addFont("Roboto-Regular.ttf", "Roboto", "normal");
+              doc.setFont("Roboto");
+            }
+            doc.setFontSize(16);
+            doc.text("Общий отчет по мониторингу цен", 14, 15);
+            doc.autoTable({
+              head: [["Дата", "Регион", "Продукт", "Ед.изм", "Цена", "Изм. %", "Источник"]],
+              body: data.map(d => {
+                const dateOnly = (d.date || '').split('T')[0];
+                const dp = dateOnly.split('-');
+                const fmtDate = (dp.length === 3 && dp[0].length === 4) ? `${dp[2]}.${dp[1]}.${dp[0]}` : d.date;
+                return [fmtDate, d.region_name, d.product_name, d.unit||'', d.price_som, d.change_pct||'', d.source_name];
+              }),
+              startY: 20,
+              styles: { font: "Roboto", fontStyle: "normal" }
+            });
+            doc.save("Сводный_Отчет_Цен.pdf");
+          } catch(err) {
+            console.error('PDF Error:', err);
+            alert('Ошибка создания PDF');
+          } finally {
+            btnHomePdf.textContent = 'Скачать отчёт (PDF)';
+            btnHomePdf.disabled = false;
+          }
+        });
+      }
+    });
+
+    // Close modals on Escape or outside click
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeProductsModal();
+            closePointsModal();
+        }
+    });
+    window.addEventListener('click', (e) => {
+        if (e.target.id === 'productsModal') closeProductsModal();
+        if (e.target.id === 'pointsModal') closePointsModal();
+    });
+  </script>
 </body>
 </html>

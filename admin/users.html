@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление пользователями — Панель Администратора</title>
+    <meta name="description" content="Управление учётными записями и правами доступа">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        /* ═══════════ Users Page Specific Styles ═══════════ */
+
+        .users-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .user-role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .role-admin {
+            background: linear-gradient(135deg, rgba(74, 144, 217, 0.12), rgba(74, 144, 217, 0.06));
+            color: #2c5f8a;
+            border: 1px solid rgba(74, 144, 217, 0.2);
+        }
+
+        .role-analyst {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(124, 58, 237, 0.06));
+            color: #5b21b6;
+            border: 1px solid rgba(124, 58, 237, 0.2);
+        }
+
+        .role-operator {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0.06));
+            color: #065f46;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .user-status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 0.35rem;
+        }
+
+        .status-active { background-color: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.4); }
+        .status-inactive { background-color: #ef4444; }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #4A90D9, #3A7BC8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            letter-spacing: 0.02em;
+        }
+
+        .user-cell-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-cell-name {
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        .user-cell-username {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .user-cell-date {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        /* ═══════════ Permissions Modal ═══════════ */
+
+        .modal-lg {
+            max-width: 640px;
+        }
+
+        .perm-section {
+            margin-bottom: 1rem;
+        }
+
+        .perm-section-title {
+            font-weight: 600;
+            font-size: 0.8125rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.35rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .perm-section-title svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .perm-checkboxes {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            padding-left: 0.25rem;
+        }
+
+        .perm-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .perm-checkbox-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .perm-checkbox-item label {
+            font-size: 0.8125rem;
+            color: var(--text-main);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .perm-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 1rem 0;
+        }
+
+        /* Role selector in modal */
+        .role-select-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .role-select-group label {
+            font-weight: 600;
+            font-size: 0.8125rem;
+            margin-bottom: 0.35rem;
+            display: block;
+        }
+
+        .role-select-group select {
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .role-select-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.1);
+        }
+
+        /* Permission info banner */
+        .perm-info-banner {
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, rgba(74, 144, 217, 0.06), rgba(74, 144, 217, 0.02));
+            border: 1px solid rgba(74, 144, 217, 0.15);
+            border-radius: 8px;
+            font-size: 0.8125rem;
+            color: #4a5568;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .perm-info-banner svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--primary);
+            flex-shrink: 0;
+        }
+
+        /* Stats mini */
+        .users-stat-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .users-stat-card {
+            flex: 1;
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .users-stat-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px -2px rgba(74, 144, 217, 0.1);
+        }
+
+        .users-stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .users-stat-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .users-stat-icon.icon-blue {
+            background: rgba(74, 144, 217, 0.1);
+        }
+
+        .users-stat-icon.icon-blue svg { stroke: #4A90D9; }
+
+        .users-stat-icon.icon-green {
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .users-stat-icon.icon-green svg { stroke: #10b981; }
+
+        .users-stat-icon.icon-purple {
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .users-stat-icon.icon-purple svg { stroke: #7c3aed; }
+
+        .users-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1;
+        }
+
+        .users-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+
+        /* User form password group */
+        .password-group {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: var(--text-muted);
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body class="admin-body">
+
+    <!-- Top Navbar -->
+    <header class="admin-header">
+        <div class="header-brand">
+            <span class="brand-title">
+                <svg fill="none" height="28" viewBox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7L3 11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11L21 7L12 2Z" fill="#3b82f6"/>
+                </svg>
+            </span>
+        </div>
+        <div class="header-user">
+            <span id="userNameDisplay">...</span>
+            <button id="logoutBtn" class="btn btn-outline btn-sm">Выйти</button>
+        </div>
+    </header>
+
+    <div class="admin-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item" data-rbac-module="analytics">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M18 20V4M6 20v-4" /></svg> Дашборд
+                </a>
+                <a href="prices.html" class="nav-item" data-rbac-module="prices">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h.01M5.22 2.22l8.36.002c.53 0 1.04.21 1.41.59l7.41 7.41a2 2 0 010 2.83l-6.58 6.58a2 2 0 01-2.83 0l-7.41-7.41a2 2 0 01-.59-1.41V3.22a1 1 0 011-1z" /></svg> Мониторинг Цен
+                </a>
+                <a href="dictionaries.html" class="nav-item" data-rbac-module="dictionaries">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6l2 2h8a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V6c0-1.1.9-2 2-2z" /></svg> Справочники
+                </a>
+                <a href="users.html" class="nav-item active" data-rbac-admin-only="true">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg> Пользователи
+                </a>
+                <a href="#" class="nav-item disabled" title="В разработке" data-rbac-module="analytics">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h6M9 16h6M4 6v14a2 2 0 002 2h12a2 2 0 002-2V8l-6-6H6a2 2 0 00-2 2z" /></svg> Новости
+                </a>
+                <a href="#" class="nav-item disabled" title="В разработке" data-rbac-admin-only="true">
+                    <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" /><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.09a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.56.2 1.09.68 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" /></svg> Настройки
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="page-header">
+                <h1>Управление доступом</h1>
+                <p>Учётные записи, роли и разрешения пользователей системы.</p>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="users-stat-row" id="usersStatsRow">
+                <div class="users-stat-card">
+                    <div class="users-stat-icon icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="users-stat-value" id="statTotal">-</div>
+                        <div class="users-stat-label">Всего пользователей</div>
+                    </div>
+                </div>
+                <div class="users-stat-card">
+                    <div class="users-stat-icon icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="users-stat-value" id="statAdmins">-</div>
+                        <div class="users-stat-label">Администраторов</div>
+                    </div>
+                </div>
+                <div class="users-stat-card">
+                    <div class="users-stat-icon icon-purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 20V10M18 20V4M6 20v-4" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="users-stat-value" id="statAnalysts">-</div>
+                        <div class="users-stat-label">Аналитиков</div>
+                    </div>
+                </div>
+                <div class="users-stat-card">
+                    <div class="users-stat-icon icon-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="users-stat-value" id="statOperators">-</div>
+                        <div class="users-stat-label">Операторов</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="card">
+                <div class="card-header d-flex justify-between align-center">
+                    <h2 style="margin:0;">Пользователи системы</h2>
+                    <button class="btn btn-primary" id="btnAddUser">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4.5v15m7.5-7.5h-15" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Добавить пользователя
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>Пользователь</th>
+                                <th>Роль</th>
+                                <th>Статус</th>
+                                <th>Дата создания</th>
+                                <th>Последний вход</th>
+                                <th style="width:140px;">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr><td colspan="6" class="text-center">Загрузка...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ═══════════ Add/Edit User Modal ═══════════ -->
+    <div id="userModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="userModalTitle">Добавить пользователя</h2>
+                <button class="btn-close" id="btnCloseUserModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <input type="hidden" id="userId">
+                    <div class="form-group">
+                        <label required>Имя (отображаемое)</label>
+                        <input type="text" id="userName" required placeholder="Например: Иванов И.И.">
+                    </div>
+                    <div class="form-group">
+                        <label required>Логин</label>
+                        <input type="text" id="userLogin" required placeholder="Например: ivanov" autocomplete="off">
+                    </div>
+                    <div class="form-group" id="passwordGroup">
+                        <label id="passwordLabel" required>Пароль</label>
+                        <input type="password" id="userPassword" placeholder="Минимум 6 символов" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label required>Роль</label>
+                        <select id="userRole" required>
+                            <option value="">Выберите роль...</option>
+                            <option value="Администратор">Администратор</option>
+                            <option value="Аналитик">Аналитик</option>
+                            <option value="Оператор">Оператор</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-end gap-2">
+                <button class="btn btn-outline" id="btnCancelUserModal">Отмена</button>
+                <button class="btn btn-primary" id="btnSaveUser">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════ Edit Permissions Modal ═══════════ -->
+    <div id="permModal" class="modal-overlay hidden">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <h2 id="permModalTitle">Настройка прав доступа</h2>
+                <button class="btn-close" id="btnClosePermModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="permUserId">
+
+                <div class="perm-info-banner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/>
+                    </svg>
+                    <span>Выберите роль для автозаполнения прав. Затем настройте индивидуальные разрешения.</span>
+                </div>
+
+                <div class="role-select-group">
+                    <label>Роль пользователя</label>
+                    <select id="permRole">
+                        <option value="Администратор">Администратор</option>
+                        <option value="Аналитик">Аналитик</option>
+                        <option value="Оператор">Оператор</option>
+                    </select>
+                </div>
+
+                <hr class="perm-divider">
+
+                <div id="permCheckboxContainer">
+                    <!-- Dynamically generated permission checkboxes -->
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-end gap-2">
+                <button class="btn btn-outline" id="btnCancelPermModal">Отмена</button>
+                <button class="btn btn-primary" id="btnSavePerms">Сохранить права</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════ Delete User Confirmation Modal ═══════════ -->
+    <div id="deleteUserModal" class="modal-overlay hidden">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2>Подтверждение удаления</h2>
+                <button class="btn-close" id="btnCloseDeleteUserModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите деактивировать учётную запись <strong id="deleteUserName"></strong>?</p>
+                <p class="text-muted" style="font-size:0.8125rem;">Пользователь потеряет доступ к системе. Это действие можно отменить только через базу данных.</p>
+                <input type="hidden" id="deleteUserId">
+            </div>
+            <div class="modal-footer d-flex justify-end gap-2">
+                <button class="btn btn-outline" id="btnCancelDeleteUser">Отмена</button>
+                <button class="btn btn-danger" id="btnConfirmDeleteUser">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/rbac.js"></script>
+    <script src="js/users.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            document.getElementById('logoutBtn').addEventListener('click', async () => {
+                await API.logout();
+                window.location.href = 'login.html';
+            });
+
+            try {
+                const me = await API.getMe();
+                RBAC.init(me);
+                document.getElementById('userNameDisplay').textContent = me.name;
+
+                // If not admin, redirect away
+                if (me.role !== 'Администратор') {
+                    window.location.href = 'dashboard.html';
+                    return;
+                }
+            } catch (err) {
+                // API.getMe will handle redirect if unauthorized
+            }
+        });
+    </script>
+</body>
+
+</html>
